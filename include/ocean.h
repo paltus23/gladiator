@@ -4,6 +4,8 @@
 #include "types.h"
 
 #include <vector>
+
+typedef std::vector< std::vector<int> > area_t;
 class Ocean
 {
     public:
@@ -13,7 +15,7 @@ class Ocean
         int add_isle(int x, int y, std::vector< std::vector<int> > isle);
     protected:
         coord_t Size;
-        std::vector< std::vector<int> > Ocean_area;// it's not a dogma for write with or without spaces sometimes
+        area_t Ocean_area;// it's not a dogma for write with or without spaces sometimes
 
 
     private:
