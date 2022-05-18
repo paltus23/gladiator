@@ -216,11 +216,13 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
     }
 }
 /**
-*
-*
-*
+* @brief
+* @param in x is left coordinate of isle object in ocean
+* @param in y is top coordinate of isle object in ocean
+* @param in isle object of adding isle
+* @return -1 if isle not added else 1 if added
 */
-int Ocean::add_isle(int x, int y, std::vector< std::vector<int> > isle)
+int Ocean::add_isle(int x, int y, area_t isle)
 {
     if(x < 0 || y < 0 || x >= Size.x || y >= Size.y) return -1;
 
@@ -232,7 +234,7 @@ int Ocean::add_isle(int x, int y, std::vector< std::vector<int> > isle)
         }
     }
 
-    return -1;
+    return 1;
 }
 
 

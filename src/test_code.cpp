@@ -67,7 +67,18 @@ void test_search_way_out()
     coord_t c = {20,20};
     Ocean *ocean = new Ocean(c);
 
+    area_t isle{
+        {0, 1, 1},
+        {0, 1, 0},
+        {1, 1, 0}
+    };
+    printf("add isle\n");
 
+    ocean->add_isle(1,1, isle);
+
+    print_ocean(ocean);
+
+    delete ocean;
 }
 
 
