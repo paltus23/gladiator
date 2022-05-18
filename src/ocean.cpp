@@ -1,5 +1,6 @@
 #include "ocean.h"
 #include "dice.h"
+#include <iostream>
 
 Ocean::Ocean(coord_t size):Size(size)
 {
@@ -237,4 +238,19 @@ int Ocean::add_isle(int x, int y, area_t isle)
     return 1;
 }
 
+/**
+ * @brief
+ * @param 
+ */
+void Ocean::print(Ocean * ocean)
+{
+    for(std::vector<int> x : ocean->Ocean_area)
+    {
+        for(int y : x)
+        {
+            printf("%d",y);
+        }
+        printf("\n");
+    }
 
+}

@@ -9,10 +9,15 @@
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
-#include <iostream>
 
 
 //using namespace std;
+
+void print_ocean(Ocean *ocean)
+{
+    Ocean::print(ocean);
+
+}
 
 void test_print_colour_screen()
 {
@@ -52,6 +57,23 @@ void test_print_colour_screen()
 
 }
 
+
+void test_draw_rectangle()
+{
+    Screen screen(50, 50);
+
+    // screen.draw_rectangle(-2,-2,500,7,'v');
+
+    system("cls");
+
+    screen.fill('.');
+
+    screen.draw_rectangle(3,3,5,5,'v');
+    screen.draw_rectangle(1,1,5,5,'m');
+    screen.draw_rectangle(2,2,5,5,'u');
+    screen.show();
+
+}
 
 void test_create_isle()
 {

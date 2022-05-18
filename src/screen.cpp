@@ -16,6 +16,12 @@ void Screen::show()
     }
 
 }
+/**
+ * @brief draw arena object
+ *              WARNING don't have any checks of arguments!
+ * 
+ * 
+ * */
 void Screen::draw(Arena * arena, align_t align)
 {
     coord_t overall_size, floor_size;
@@ -45,6 +51,25 @@ void Screen::draw(Arena * arena, align_t align)
     }
     case LEFT_UP:
         break;
+    }
+}
+
+/**
+ * @brief draw rectangle
+ * 
+ */
+void Screen::draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch)
+{
+    int end_x = x + size_x;
+    int end_y = x + size_y;
+
+    for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
+    {
+        for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
+        {
+            
+            screen[cur_y][cur_x] = ch;
+        }
     }
 }
 

@@ -12,7 +12,9 @@ class Ocean
         Ocean(coord_t size);
         virtual ~Ocean();
         void create_random_isle(int num = 1, int cursor_x = -1, int cursor_y = -1);
-        int add_isle(int x, int y, std::vector< std::vector<int> > isle);
+        int add_isle(int x, int y, area_t isle);
+
+        static void print(Ocean * ocean);
     protected:
         coord_t Size;
         area_t Ocean_area;// it's not a dogma for write with or without spaces sometimes

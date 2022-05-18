@@ -32,8 +32,13 @@ class Screen
         coord_t Size;
 
 
+        void fill(char ch)
+        {
+            memset(screen_mem, (int)ch, Size.x*Size.y);
+        }
         void draw(Arena * arena, align_t align = Screen::CENTER);
         void draw_magic_circle(int d, align_t align = Screen::CENTER);
+        void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
 
         void show()/*{ cout << screen_mem; }*/;
         void clear(){memset(screen_mem, ' ', Size.x*Size.y);};
