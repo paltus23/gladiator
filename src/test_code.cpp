@@ -71,6 +71,13 @@ void test_draw_rectangle()
     screen.draw_rectangle(3,3,5,5,'v');
     screen.draw_rectangle(1,1,5,5,'m');
     screen.draw_rectangle(2,2,5,5,'u');
+
+    screen.draw_rectangle(-2,-2,5,5,'c');
+    screen.draw_rectangle(49,49,5,5,'p');
+
+
+    screen.draw_rectangle(-2,20,5,5,'%');
+    screen.draw_rectangle(-12,-12,5,5,'M');
     screen.show();
 
 }
