@@ -39,6 +39,12 @@ class Screen
         void draw(Arena * arena, align_t align = Screen::CENTER);
         void draw_magic_circle(int d, align_t align = Screen::CENTER);
         void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
+        void draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch);
+
+        void draw_vertical_line(int x, int y, size_t size, char ch);
+        void draw_horizontal_line(int x, int y, size_t size, char ch);
+
+        void draw(int x, int y, Arena * arena);
 
         void show()/*{ cout << screen_mem; }*/;
         void clear(){memset(screen_mem, ' ', Size.x*Size.y);};

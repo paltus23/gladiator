@@ -16,61 +16,98 @@ void Screen::show()
     }
 
 }
+
+
+/**
+ * @brief draw rectangle
+ * @param in x - start x coord
+ * @param in y - start y coord
+ * @param in size_x - size on x coord
+ * @param in size_y - size on y coord
+ * @param ch - character will be print
+ */
+void Screen::draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch)
+{
+    int end_x = x + size_x;
+    int end_y = y + size_y;
+
+    for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
+    {
+        for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
+        {
+            screen[cur_y][cur_x] = ch;
+        }
+    }
+}
+/**
+ * @brief draw vertical line
+ * @param in x - start x coord
+ * @param in y - start y coord
+ * @param in size - length of line
+ * @param ch - character will be print
+ */
+void Screen::draw_vertical_line(int x, int y, size_t size, char ch)
+{
+    int end_y = y + size;
+    for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
+    {
+        screen[cur_y][x] = ch;
+    }
+}
+/**
+ * @brief draw horizontal line
+ * @param in x - start x coord
+ * @param in y - start y coord
+ * @param in size - length of line
+ * @param ch - character will be print
+ */
+void Screen::draw_horizontal_line(int x, int y, size_t size, char ch)
+{
+    int end_x = x + size;
+    for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
+    {
+        screen[y][cur_x] = ch;
+    }
+}
+
+
+/**
+ * @brief draw rectangle edge
+ * @param in x - start x coord
+ * @param in y - start y coord
+ * @param in size_x - size on x coord
+ * @param in size_y - size on y coord
+ * @param ch - character will be print
+ */
+void Screen::draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch)
+{
+    int end_x = x + size_x;
+    int end_y = y + size_y;
+
+    if(size_y < 1 || size_x < 1)
+        return;
+
+    draw_vertical_line(x, y, size_y, ch);
+    draw_horizontal_line(x, y, size_x, ch);
+    draw_vertical_line(x + size_x - 1, y, size_y, ch);
+    draw_horizontal_line(x, y + size_y - 1, size_x, ch);
+
+}
+
 /**
  * @brief draw arena object
  *              WARNING don't have any checks of arguments!
  * 
  * 
  * */
-void Screen::draw(Arena * arena, align_t align)
+void Screen::draw(int x, int y, Arena * arena)
 {
     coord_t overall_size, floor_size;
     arena->get_overall_size(&overall_size);
     arena->get_floor_size(&floor_size);
 
-    switch(align)
-    {
-    case CENTER:
-    {
-        clear();
-        int offset_x = (Size.x-overall_size.x)/2;
-        int offset_y = (Size.y-overall_size.y)/2;
-
-        //draw up wall
-        memset(screen[offset_y] + offset_x, '#', overall_size.x);
-
-        for(int i = 0; i<floor_size.y; i++)
-        {
-            screen[offset_y + i + 1][offset_x] = '#';
-            memset(screen[offset_y + 1 + i] + offset_x + 1, '.', floor_size.x);
-            screen[offset_y + i + 1][offset_x + floor_size.x + 1] = '#';
-        }
-        //draw down wall
-        memset(screen[offset_y + floor_size.y + 1] + offset_x, '#', overall_size.x);
-        break;
-    }
-    case LEFT_UP:
-        break;
-    }
-}
-
-/**
- * @brief draw rectangle
- * 
- */
-void Screen::draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch)
-{
-    int end_x = x + size_x;
-    int end_y = x + size_y;
-
-    for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
-    {
-        for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
-        {
-            
-            screen[cur_y][cur_x] = ch;
-        }
-    }
+    draw_rectangle_edge(x, y, overall_size.x, overall_size.y, '#');
+    draw_rectangle_edge(x + 1, y + 1, floor_size.x, floor_size.y, '.');
 }
 
 /** \brief CIRCLE
@@ -142,4 +179,43 @@ void Screen::draw_magic_circle(int d, align_t align)
         break;
     }
 
+}
+
+
+/**
+ * @brief draw arena object
+ *              WARNING don't have any checks of arguments!
+ * Not for using in production
+ * 
+ * */
+void Screen::draw(Arena * arena, align_t align)
+{
+    coord_t overall_size, floor_size;
+    arena->get_overall_size(&overall_size);
+    arena->get_floor_size(&floor_size);
+
+    switch(align)
+    {
+    case CENTER:
+    {
+        clear();
+        int offset_x = (Size.x-overall_size.x)/2;
+        int offset_y = (Size.y-overall_size.y)/2;
+
+        //draw up wall
+        memset(screen[offset_y] + offset_x, '#', overall_size.x);
+
+        for(int i = 0; i<floor_size.y; i++)
+        {
+            screen[offset_y + i + 1][offset_x] = '#';
+            memset(screen[offset_y + 1 + i] + offset_x + 1, '.', floor_size.x);
+            screen[offset_y + i + 1][offset_x + floor_size.x + 1] = '#';
+        }
+        //draw down wall
+        memset(screen[offset_y + floor_size.y + 1] + offset_x, '#', overall_size.x);
+        break;
+    }
+    case LEFT_UP:
+        break;
+    }
 }

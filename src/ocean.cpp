@@ -151,7 +151,6 @@ void Ocean::create_random_isle(int num, int cursor_x, int cursor_y)
 */
 void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
 {
-
     auto check_coord = [this](int cur_x, int cur_y)
     {
         return !(cur_x < 0 || cur_x >= this->Size.x || cur_y < 0 || cur_y >= this->Size.y);

@@ -20,8 +20,10 @@ int main()
     dice_init();
 
 
-    test_assign_vectors();
+    //test_search_way_out();
 
+
+    test_draw_rectangle();
     return 0;
 }
 
