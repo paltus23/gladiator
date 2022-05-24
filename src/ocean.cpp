@@ -20,7 +20,7 @@ Ocean::~Ocean()
 }
 
 /**
-* @brief
+* @brief create isle random form with area equals num
 * @param in num - size of isle
 * @param in cursor_x - start x cursor
 * @param in cursor_y - start y cursor
@@ -91,63 +91,16 @@ void Ocean::create_random_isle(int num, int cursor_x, int cursor_y)
         }
         else // search way out from stuck
         {
-            int dir = dice(4) - 1;
-            int _cursor_x = cursor_x;
-            int _cursor_y = cursor_y;
-            switch(dir)
-            {
-                case 0: //right
-                {
-                    for(;_cursor_y < Size.y; _cursor_y++)
-                    {
-                        for(;_cursor_x < Size.x; _cursor_x++)
-                        {
-                            if(Ocean_area[_cursor_x][_cursor_y] == 0)
-                            {
-                                int _cursor_x = cursor_x;
-                                int _cursor_y = cursor_y;
-                                break;
-                            }
-                        }
-                        _cursor_y++;
-                        for(;_cursor_x >= 0; _cursor_x--)
-                        {
-                            if(Ocean_area[_cursor_x][_cursor_y] == 0)
-                            {
-                                int _cursor_x = cursor_x;
-                                int _cursor_y = cursor_y;
-                                break;
-                            }
-                        }
-                        _cursor_x = 0;
-                    }
-                    break;
-                }
-                case 1: //left
-                {
-                    cursor_x--;
-                    break;
-                }
-                case 2: //up
-                {
-                    cursor_y--;
-                    break;
-                }
-                case 3: //down
-                {
-                    cursor_y++;
-                    break;
-                }
-            }
+
         }
     }
 }
 
 /**
-* @brief
+* @brief find empty cell of isle
 * @param in cur_x - start x cursor
 * @param in cur_y - start y cursor
-* @param out cursor_out - finded nearby empty dot
+* @param out cursor_out - finded nearby empty cell
 */
 void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
 {
@@ -155,6 +108,19 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
     {
         return !(cur_x < 0 || cur_x >= this->Size.x || cur_y < 0 || cur_y >= this->Size.y);
     };
+
+    // Check first cell
+    if(check_coord(cur_x, cur_y))
+    {
+        if(!get_cell(cur_x, cur_y))
+        {
+            cursor_out.x = cur_x;
+            cursor_out.y = cur_y;
+            return;
+        }
+    }
+
+    // set size of side of search square
     int side_size = 2;
     cur_y--;
     while(1)
@@ -163,7 +129,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
         {
             if(check_coord(cur_x, cur_y))
             {
-                if(!Ocean_area[cur_x][cur_y])
+                if(!get_cell(cur_x, cur_y))
                 {
                     cursor_out.x = cur_x;
                     cursor_out.y = cur_y;
@@ -177,7 +143,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
         {
             if(check_coord(cur_x, cur_y))
             {
-                if(!Ocean_area[cur_x][cur_y])
+                if(!get_cell(cur_x, cur_y))
                 {
                     cursor_out.x = cur_x;
                     cursor_out.y = cur_y;
@@ -191,7 +157,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
         {
             if(check_coord(cur_x, cur_y))
             {
-                if(!Ocean_area[cur_x][cur_y])
+                if(!get_cell(cur_x, cur_y))
                 {
                     cursor_out.x = cur_x;
                     cursor_out.y = cur_y;
@@ -205,7 +171,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
         {
             if(check_coord(cur_x, cur_y))
             {
-                if(!Ocean_area[cur_x][cur_y])
+                if(!get_cell(cur_x, cur_y))
                 {
                     cursor_out.x = cur_x;
                     cursor_out.y = cur_y;
@@ -213,6 +179,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
                 }
             }
         }
+        side_size++;
     }
 }
 /**
@@ -226,11 +193,11 @@ int Ocean::add_isle(int x, int y, area_t isle)
 {
     if(x < 0 || y < 0 || x >= Size.x || y >= Size.y) return -1;
 
-    for(int i = 0; i < isle.size() && (x + i) < Ocean_area.size(); i++)
+    for(int i = 0; i < isle.size() && (y + i) < Ocean_area.size(); i++)
     {
-        for(int j = 0; j < isle[i].size() && (y + j) < Ocean_area[x + i].size(); j++)
+        for(int j = 0; j < isle[i].size() && (x + j) < Ocean_area[y + i].size(); j++)
         {
-            Ocean_area[x + i][y + j] = isle[i][j];
+            Ocean_area[y + i][x + j] = isle[i][j];
         }
     }
 
@@ -243,13 +210,15 @@ int Ocean::add_isle(int x, int y, area_t isle)
  */
 void Ocean::print(Ocean * ocean)
 {
-    for(std::vector<int> x : ocean->Ocean_area)
+    for(std::vector<int> y : ocean->Ocean_area)
     {
-        for(int y : x)
+        for(int x : y)
         {
-            printf("%d",y);
+            printf("%d",x);
         }
         printf("\n");
     }
 
 }
+
+

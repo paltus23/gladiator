@@ -16,7 +16,6 @@
 void print_ocean(Ocean *ocean)
 {
     Ocean::print(ocean);
-
 }
 
 void test_print_colour_screen()
@@ -93,20 +92,39 @@ void test_create_isle()
 */
 void test_search_way_out()
 {
-    coord_t c = {20,20};
+    coord_t c = {10,10};
     Ocean *ocean = new Ocean(c);
 
     area_t isle{
-        {0, 1, 1},
-        {0, 1, 0},
-        {1, 1, 0}
+      // 0  1  2  3  4  5  6  7  8
+        {1, 1, 1, 0, 0, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0, 1, 1, 1, 0},
+        {1, 1, 0, 0, 0, 1, 1, 1, 0},
+        {1, 1, 0, 0, 0, 1, 1, 1, 0},
+        {1, 1, 1, 1, 0, 0, 0, 0, 0},
+        {1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {1, 1, 0, 1, 1, 1, 0, 1, 0},
+        {1, 1, 1, 1, 1, 1, 0, 0, 0},
+        {1, 1, 0, 0, 0, 0, 0, 0, 0},
+        {1, 1, 0, 0, 0, 0, 0, 0, 0},
     };
     printf("add isle\n");
 
-    ocean->add_isle(1,1, isle);
+    ocean->add_isle(0,0, isle);
+
+    coord_t cursor_out;
+
+    ocean->search_way_out(6, 2, cursor_out);
+    printf("Coord out [%d, %d] = %d\n", cursor_out.x, cursor_out.y, ocean->get_cell(cursor_out));
+    ocean->set_cell(cursor_out, 2);
+
+    // ocean->search_way_out(5, 6, cursor_out);
+    // printf("Coord out [%d, %d] = %d\n", cursor_out.x, cursor_out.y, ocean->get_cell(cursor_out));
+    // ocean->set_cell(cursor_out, 3);
 
     print_ocean(ocean);
 
+    
     delete ocean;
 }
 

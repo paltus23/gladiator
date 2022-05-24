@@ -20,10 +20,10 @@ int main()
     dice_init();
 
 
-    //test_search_way_out();
+    test_search_way_out();
 
 
-    test_draw_rectangle();
+    //test_draw_rectangle();
     return 0;
 }
 
