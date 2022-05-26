@@ -21,44 +21,46 @@ Ocean::~Ocean()
 
 /**
 * @brief create isle random form with area equals num
-* @param in num - size of isle
-* @param in cursor_x - start x cursor
-* @param in cursor_y - start y cursor
+* @param in num - id of isle
+* @param in cur_x - start x cursor
+* @param in cur_y - start y cursor
 */
-void Ocean::create_random_isle(int num, int cursor_x, int cursor_y)
+void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
 {
-    cursor_x = cursor_x == -1 ? dice(Size.x) - 1 : cursor_x;
-    cursor_y = cursor_y == -1 ? dice(Size.y) - 1 : cursor_y;
+    cur_x = cur_x == -1 ? dice(Size.x) - 1 : cur_x;
+    cur_y = cur_y == -1 ? dice(Size.y) - 1 : cur_y;
 
-    int area_size = dice(Size.x * Size.y / 5);
+    if(area_size == 0)
+        area_size = dice(Size.x * Size.y / 5);
 
-    Ocean_area[cursor_x][cursor_y] = num;
+    set_cell(cur_x, cur_y, num);
     area_size--;
 
     while(area_size)
     {
-
+        //check available directions at this step
         int check_dir_possible[4]{0,0,0,0};
         int dice_cnt = 0;
-        if( cursor_x < Size.x && Ocean_area[cursor_x + 1][cursor_y] == 0 ) // left
+        
+        if( cur_x < (Size.x - 1) && get_cell(cur_x + 1,cur_y) == 0 ) // left
         {
+            check_dir_possible[dice_cnt] = 0;
             dice_cnt++;
-            check_dir_possible[3 - dice_cnt] = 0;
         }
-        if( cursor_x || Ocean_area[cursor_x - 1][cursor_y] == 0 ) // right
+        if( cur_x && get_cell(cur_x - 1,cur_y) == 0 ) // right
         {
+            check_dir_possible[dice_cnt] = 1;
             dice_cnt++;
-            check_dir_possible[3 - dice_cnt] = 1;
         }
-        if( cursor_y || Ocean_area[cursor_x][cursor_y - 1] == 0 ) // up
+        if( cur_y && get_cell(cur_x, cur_y - 1) == 0 ) // up
         {
+            check_dir_possible[dice_cnt] = 2;
             dice_cnt++;
-            check_dir_possible[3 - dice_cnt] = 2;
         }
-        if( cursor_y < Size.y || Ocean_area[cursor_x][cursor_y + 1] == 0 ) // down
+        if( cur_y < (Size.y - 1) && get_cell(cur_x, cur_y + 1) == 0 ) // down
         {
+            check_dir_possible[dice_cnt] = 3;
             dice_cnt++;
-            check_dir_possible[3 - dice_cnt] = 3;
         }
 
         if(dice_cnt)
@@ -68,32 +70,39 @@ void Ocean::create_random_isle(int num, int cursor_x, int cursor_y)
             {
                 case 0: //right
                 {
-                    cursor_x++;
+                    cur_x++;
                     break;
                 }
                 case 1: //left
                 {
-                    cursor_x--;
+                    cur_x--;
                     break;
                 }
                 case 2: //up
                 {
-                    cursor_y--;
+                    cur_y--;
                     break;
                 }
                 case 3: //down
                 {
-                    cursor_y++;
+                    cur_y++;
                     break;
                 }
             }
+            set_cell(cur_x, cur_y, num);
             area_size--;
         }
         else // search way out from stuck
         {
-
+            coord_t cur_out;
+            search_way_out(cur_x, cur_y, cur_out);
+            cur_x = cur_out.x;
+            cur_y = cur_out.y;
+            set_cell(cur_x, cur_y, num);
+            area_size--;
         }
     }
+    return;
 }
 
 /**
@@ -104,6 +113,7 @@ void Ocean::create_random_isle(int num, int cursor_x, int cursor_y)
 */
 void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
 {
+    // does cursor is in available area
     auto check_coord = [this](int cur_x, int cur_y)
     {
         return !(cur_x < 0 || cur_x >= this->Size.x || cur_y < 0 || cur_y >= this->Size.y);

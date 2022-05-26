@@ -20,10 +20,9 @@ int main()
     dice_init();
 
 
-    test_search_way_out();
+    test_create_isle();
 
 
-    //test_draw_rectangle();
     return 0;
 }
 

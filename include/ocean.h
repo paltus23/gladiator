@@ -2,7 +2,7 @@
 #define OCEAN_H
 
 #include "types.h"
-
+#include <iostream>
 #include <vector>
 
 typedef std::vector< std::vector<int> > area_t;
@@ -11,7 +11,7 @@ class Ocean
     public:
         Ocean(coord_t size);
         virtual ~Ocean();
-        void create_random_isle(int num = 1, int cursor_x = -1, int cursor_y = -1);
+        void create_random_isle(int num = 1, int cursor_x = -1, int cursor_y = -1, size_t area_size = 0);
         int add_isle(int x, int y, area_t isle);
 
         static void print(Ocean * ocean);

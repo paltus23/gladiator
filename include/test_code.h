@@ -6,4 +6,5 @@ void test_print_colour_screen();
 void test_assign_vectors();
 void test_search_way_out();
 void test_draw_rectangle();
+void test_create_isle();
 #endif // TEST_CODE_H_INCLUDED

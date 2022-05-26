@@ -84,6 +84,22 @@ void test_draw_rectangle()
 void test_create_isle()
 {
 
+    coord_t c = {10,10};
+    Ocean *ocean = new Ocean(c);
+
+    // ocean->create_random_isle(3,2,2);
+    // ocean->create_random_isle(4,2,2);
+    // ocean->create_random_isle(5,8,2);
+    // ocean->create_random_isle(6,2,2);
+    ocean->create_random_isle(7,9,0,20);
+    // ocean->create_random_isle(8,0,0, 20);
+
+
+    print_ocean(ocean);
+
+    //bad working with delete. 
+    delete ocean;
+
 }
 
 
