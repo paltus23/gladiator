@@ -19,9 +19,7 @@ int main()
 
     dice_init();
 
-
     test_create_isle();
-
 
     return 0;
 }

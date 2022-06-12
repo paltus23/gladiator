@@ -90,9 +90,9 @@ void test_create_isle()
     // ocean->create_random_isle(3,2,2);
     // ocean->create_random_isle(4,2,2);
     // ocean->create_random_isle(5,8,2);
-    // ocean->create_random_isle(6,2,2);
+    // ocean->create_random_isle(6,2,2);    
     ocean->create_random_isle(7,9,0,20);
-    // ocean->create_random_isle(8,0,0, 20);
+    ocean->create_random_isle(8,0,0, 20);
 
 
     print_ocean(ocean);

@@ -1,2 +1,4 @@
 /gladiator.exe
 /gladiator/gladiator.exe
+*.o.d
+*.o
