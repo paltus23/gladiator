@@ -40,11 +40,12 @@ OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o, $(notdir $(SRC_FILES)) )
 # As an example, ./build/hello.cpp.o turns into ./build/hello.cpp.d
 # DEPS := $(OBJS:.o=.d)
 
-all: $(PROGRAM_NAME) ./build/obj
+all: ./build/obj $(PROGRAM_NAME) 
 
 
 ./build/obj:
-	mkdir $(BUILD_DIR)/obj
+	mkdir $(BUILD_DIR)
+	mkdir $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o : %.cpp
 #	echo $@
