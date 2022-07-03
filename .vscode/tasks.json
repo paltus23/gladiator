@@ -6,7 +6,8 @@
 			"label": "C/C++: g++.exe build project",
 			"command": "mingw32-make.exe",
 			"args": [
-				"all"
+				"all",
+				"-j8",
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"
