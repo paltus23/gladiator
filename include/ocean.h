@@ -3,9 +3,9 @@
 
 #include "types.h"
 #include <iostream>
-#include <vector>
 
-typedef std::vector< std::vector<int> > area_t;
+/// Ocean is rectangle object, which store islands. Water is 0 and islands is positive numbers.
+/// Origin of coordinates is left-up corner
 class Ocean
 {
     public:
@@ -17,11 +17,11 @@ class Ocean
         static void print(Ocean * ocean);
         void search_way_out(int cur_x, int cur_y, coord_t& cursor_out);
 
-        inline int get_cell(int x, int y){return Ocean_area[y][x];};
-        inline void set_cell(int x, int y, int v){Ocean_area[y][x] = v;}
+        inline int get_cell(int x, int y) {return Ocean_area[y][x];};
+        inline void set_cell(int x, int y, int v) {Ocean_area[y][x] = v; /*printf("set_cell num = %d x = %2d y = %2d\n", v, x, y);*/}
 
-        inline int get_cell(coord_t c){return Ocean_area[c.y][c.x];};
-        inline void set_cell(coord_t c, int x){Ocean_area[c.y][c.x] = x;}
+        inline int get_cell(coord_t c) {return Ocean_area[c.y][c.x];};
+        inline void set_cell(coord_t c, int x) {Ocean_area[c.y][c.x] = x;}
         
     protected:
         coord_t Size;

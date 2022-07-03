@@ -33,6 +33,7 @@ void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
     if(area_size == 0)
         area_size = dice(Size.x * Size.y / 5);
 
+    //set start cell
     set_cell(cur_x, cur_y, num);
     area_size--;
 
@@ -42,12 +43,12 @@ void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
         int check_dir_possible[4]{0,0,0,0};
         int dice_cnt = 0;
         
-        if( cur_x < (Size.x - 1) && get_cell(cur_x + 1,cur_y) == 0 ) // left
+        if( cur_x < (Size.x - 1) && get_cell(cur_x + 1,cur_y) == 0 ) // right
         {
             check_dir_possible[dice_cnt] = 0;
             dice_cnt++;
         }
-        if( cur_x && get_cell(cur_x - 1,cur_y) == 0 ) // right
+        if( cur_x && get_cell(cur_x - 1,cur_y) == 0 ) // left
         {
             check_dir_possible[dice_cnt] = 1;
             dice_cnt++;
@@ -65,7 +66,9 @@ void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
 
         if(dice_cnt)
         {
+            //choose random dir
             int dir = dice(dice_cnt) - 1;
+            //choose from available directions
             switch(check_dir_possible[dir])
             {
                 case 0: //right
@@ -189,7 +192,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
                 }
             }
         }
-        side_size++;
+        side_size+=2;
     }
 }
 /**
