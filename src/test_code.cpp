@@ -13,6 +13,23 @@
 
 //using namespace std;
 
+void setColor(int colorBack, int colorFore)
+{
+    int back = 0;
+    if (colorBack & 1) back |= BACKGROUND_BLUE;
+    if (colorBack & 2) back |= BACKGROUND_GREEN;
+    if (colorBack & 4) back |= BACKGROUND_RED;
+    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
+
+    int fore = 0;
+    if (colorFore & 1) fore |= FOREGROUND_BLUE;
+    if (colorFore & 2) fore |= FOREGROUND_GREEN;
+    if (colorFore & 4) fore |= FOREGROUND_RED;
+    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), back | fore);
+}
+
 void print_ocean(Ocean *ocean)
 {
     Ocean::print(ocean);
@@ -36,25 +53,46 @@ void test_print_colour_screen()
 //    arena.print_units();
 
 
-    system("Color 0A");
-    for(int i = 0; i < 100; i++)
+    system("cls");
+
+    char s[100] ;
+    
+    setColor(0, 8);
+
+    //turn off cursor visibility
+    const CONSOLE_CURSOR_INFO console_cursor_info = {1,false};
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console_cursor_info);
+
+    screen.draw_rectangle(0, 0, 120, 30, '.');
+
+
+    screen.show();
+
+    int last_pos = -1;
+    //print run red symbol '@'
+    for(int i = 5; i<20; i++)
     {
 
-        system("cls");
-        int color = i%16;
+        //clear last cell
+        if(last_pos >=0)
+        {
+            setColor(0, 8);
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {last_pos,20});
+            std::cout << '.';
+        }
 
-        char s[100] ;
-        sprintf(s,"Color 0%x", color );
-        system(s);
-
-        screen.draw_magic_circle(i%24);
-
-        screen.show();
-
-        Sleep(1000/100);
+        //print '@'
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {i,20});
+        setColor(0, 4);
+        std::cout << '@';
+        last_pos = i;
+        //SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console_cursor_info);
+        Sleep(300);
     }
 
 }
+
+
 
 
 void test_draw_rectangle()
@@ -114,8 +152,8 @@ void test_search_way_out()
     area_t isle{
       // 0  1  2  3  4  5  6  7  8
         {1, 1, 1, 0, 0, 0, 0, 0, 0},
-        {0, 1, 0, 0, 0, 1, 1, 1, 0},
-        {1, 1, 0, 0, 0, 1, 1, 1, 0},
+        {1, 1, 1, 0, 0, 1, 1, 1, 0},
+        {1, 1, 1, 0, 0, 1, 1, 1, 0},
         {1, 1, 0, 0, 0, 1, 1, 1, 0},
         {1, 1, 1, 1, 0, 0, 0, 0, 0},
         {1, 1, 1, 1, 1, 1, 0, 0, 0},
@@ -130,7 +168,7 @@ void test_search_way_out()
 
     coord_t cursor_out;
 
-    ocean->search_way_out(6, 2, cursor_out);
+    ocean->search_way_out(1, 1, cursor_out);
     printf("Coord out [%d, %d] = %d\n", cursor_out.x, cursor_out.y, ocean->get_cell(cursor_out));
     ocean->set_cell(cursor_out, 2);
 
