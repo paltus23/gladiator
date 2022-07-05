@@ -15,6 +15,7 @@ enum{
 
 User_control::Do()
 {
+    cmd = NOTHING;
     if (_kbhit())
     {
         int key = _getch();
@@ -54,6 +55,9 @@ User_control::Do()
             std::cout << "Right";
             break;
         }
+        case KEY_ESCAPE:
+            cmd = EXIT;
+            break;
         default:
             break;
         }
