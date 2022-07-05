@@ -6,6 +6,7 @@
 #include "screen.h"
 #include "dice.h"
 #include "ocean.h"
+#include "user_control.h"
 #include <windows.h>
 #include <iostream>
 #include <cstdlib>
@@ -119,6 +120,38 @@ void test_draw_rectangle()
 
 }
 
+void test_fast_screen_show()
+{
+
+    coord_t coord;
+    Screen::get_console_size(&coord);
+
+    Screen screen(coord.x, coord.y);
+
+    // screen.draw_rectangle(-2,-2,500,7,'v');
+
+    system("cls");
+
+    screen.fill('.');
+    screen.show();
+    screen.draw_rectangle(3,3,5,5,'v');
+    screen.show();
+    screen.draw_rectangle(1,1,5,5,'m');
+    screen.show();
+    screen.draw_rectangle(2,2,5,5,'u');
+    screen.show();
+    screen.draw_rectangle(-2,-2,5,5,'c');
+    screen.show();
+    screen.draw_rectangle(49,49,5,5,'p');
+    screen.show();
+    screen.draw_rectangle(-2,20,5,5,'%');
+    screen.show();
+    screen.draw_rectangle(-12,-12,5,5,'M');
+    screen.show();
+
+
+}
+
 void test_create_isle()
 {
 
@@ -199,5 +232,17 @@ void test_assign_vectors()
     for(int x:x2)
     {
         printf("%d\n",x);
+    }
+}
+
+
+void test_user_control()
+{
+    User_control user_control;
+    while(1)
+    {
+        user_control.Do();
+        if (user_control.cmd == User_control::EXIT)
+            break;
     }
 }

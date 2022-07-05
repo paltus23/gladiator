@@ -5,15 +5,20 @@
 
 void Screen::show()
 {
-    COORD point;
-    for(point.X = 0; point.X < Size.x; point.X++)
-    {
-        for(point.Y = 0; point.Y < Size.y; point.Y++)
-        {
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
-            std::cout << screen[point.Y][point.X];
-        }
-    }
+    // COORD point;
+    // for(point.X = 0; point.X < Size.x; point.X++)
+    // {
+    //     for(point.Y = 0; point.Y < Size.y; point.Y++)
+    //     {
+    //         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
+    //         std::cout << screen[point.Y][point.X];
+    //     }
+    // }
+
+
+    COORD point = {0,0};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
+    std::cout << screen_mem;
 
 }
 
@@ -103,8 +108,10 @@ void Screen::draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, cha
 void Screen::draw(int x, int y, Arena * arena)
 {
     coord_t overall_size, floor_size;
-    arena->get_overall_size(&overall_size);
-    arena->get_floor_size(&floor_size);
+    arena->get_size(&floor_size);
+    overall_size.x = floor_size.x + 2;
+    overall_size.y = floor_size.y + 2;
+
 
     draw_rectangle_edge(x, y, overall_size.x, overall_size.y, '#');
     draw_rectangle_edge(x + 1, y + 1, floor_size.x, floor_size.y, '.');
@@ -191,8 +198,9 @@ void Screen::draw_magic_circle(int d, align_t align)
 void Screen::draw(Arena * arena, align_t align)
 {
     coord_t overall_size, floor_size;
-    arena->get_overall_size(&overall_size);
-    arena->get_floor_size(&floor_size);
+    arena->get_size(&floor_size);
+    overall_size.x = floor_size.x + 2;
+    overall_size.y = floor_size.y + 2;
 
     switch(align)
     {
@@ -217,5 +225,17 @@ void Screen::draw(Arena * arena, align_t align)
     }
     case LEFT_UP:
         break;
+    }
+}
+
+
+
+void Screen::get_console_size(coord_t *coord)
+{
+    CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
+    if(GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &ConsoleScreenBufferInfo) )
+    {
+        coord->x = ConsoleScreenBufferInfo.srWindow.Right - ConsoleScreenBufferInfo.srWindow.Left + 1;
+        coord->y = ConsoleScreenBufferInfo.srWindow.Bottom - ConsoleScreenBufferInfo.srWindow.Top + 1;
     }
 }

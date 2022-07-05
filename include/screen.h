@@ -48,5 +48,7 @@ class Screen
 
         void show()/*{ cout << screen_mem; }*/;
         void clear(){memset(screen_mem, ' ', Size.x*Size.y);};
+
+        static void get_console_size(coord_t *coord);
 };
 #endif // SCREEN_H

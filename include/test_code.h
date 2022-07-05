@@ -7,4 +7,6 @@ void test_assign_vectors();
 void test_search_way_out();
 void test_draw_rectangle();
 void test_create_isle();
+void test_fast_screen_show();
+void test_user_control();
 #endif // TEST_CODE_H_INCLUDED
