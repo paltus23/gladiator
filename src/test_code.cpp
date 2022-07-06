@@ -31,6 +31,28 @@ void setColor(int colorBack, int colorFore)
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), back | fore);
 }
 
+void change_colour(int colorBack, int colorFore, COORD dwWriteCoord)
+{
+    int back = 0;
+    if (colorBack & 1) back |= BACKGROUND_BLUE;
+    if (colorBack & 2) back |= BACKGROUND_GREEN;
+    if (colorBack & 4) back |= BACKGROUND_RED;
+    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
+
+    int fore = 0;
+    if (colorFore & 1) fore |= FOREGROUND_BLUE;
+    if (colorFore & 2) fore |= FOREGROUND_GREEN;
+    if (colorFore & 4) fore |= FOREGROUND_RED;
+    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
+    
+    auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    
+    WORD attr = back | fore;
+
+    long unsigned int num;
+    WriteConsoleOutputAttribute(  handle,  &attr,  1,  dwWriteCoord, &num);
+}
+
 void print_ocean(Ocean *ocean)
 {
     Ocean::print(ocean);
@@ -65,7 +87,6 @@ void test_print_colour_screen()
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &console_cursor_info);
 
     screen.draw_rectangle(0, 0, 120, 30, '.');
-
 
     screen.show();
 
@@ -131,7 +152,7 @@ void test_fast_screen_show()
     // screen.draw_rectangle(-2,-2,500,7,'v');
 
     system("cls");
-
+    setColor(0, 8);
     screen.fill('.');
     screen.show();
     screen.draw_rectangle(3,3,5,5,'v');
@@ -149,6 +170,8 @@ void test_fast_screen_show()
     screen.draw_rectangle(-12,-12,5,5,'M');
     screen.show();
 
+    COORD c = {10,10};
+    change_colour(0, 8, c);
 
 }
 
@@ -245,4 +268,44 @@ void test_user_control()
         if (user_control.cmd == User_control::EXIT)
             break;
     }
+}
+
+void test_print_simple_colour_rect()
+{
+
+    auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    int back = 0;
+    int colorBack = 0;
+    int colorFore = 4;
+
+    if (colorBack & 1) back |= BACKGROUND_BLUE;
+    if (colorBack & 2) back |= BACKGROUND_GREEN;
+    if (colorBack & 4) back |= BACKGROUND_RED;
+    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
+
+    int fore = 0;
+    if (colorFore & 1) fore |= FOREGROUND_BLUE;
+    if (colorFore & 2) fore |= FOREGROUND_GREEN;
+    if (colorFore & 4) fore |= FOREGROUND_RED;
+    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
+    
+
+    
+    WORD attr = back | fore;
+
+    CHAR_INFO chars[20];
+
+    for(int i =0; i < 20; i++)
+    {
+        chars[i].Attributes = attr;
+        chars[i].Char.AsciiChar = 'a' + i;
+    }
+
+    COORD dwBufferSize = {4, 5};
+    COORD dwBufferCoord = {0,0};
+    SMALL_RECT WriteRegion = {10,10,79,29};
+
+    auto res = WriteConsoleOutput(handle, chars, dwBufferSize, dwBufferCoord, &WriteRegion);
+    printf("%d %d %d %d %d \n", res, WriteRegion.Left, WriteRegion.Top, WriteRegion.Right, WriteRegion.Bottom);
 }

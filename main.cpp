@@ -27,7 +27,8 @@ int main()
 
     //test_user_control();;
     test_fast_screen_show();
-
+    test_print_simple_colour_rect();
+    
     return 0;
 }
 

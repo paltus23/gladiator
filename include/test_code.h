@@ -9,4 +9,5 @@ void test_draw_rectangle();
 void test_create_isle();
 void test_fast_screen_show();
 void test_user_control();
+void test_print_simple_colour_rect();
 #endif // TEST_CODE_H_INCLUDED
