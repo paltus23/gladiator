@@ -2,29 +2,24 @@
 #include "windows.h"
 #include <cmath>
 
-
+/**
+ * @brief show Screen_mem in console
+ */
 void Screen::show()
 {
-    // COORD point;
-    // for(point.X = 0; point.X < Size.x; point.X++)
-    // {
-    //     for(point.Y = 0; point.Y < Size.y; point.Y++)
-    //     {
-    //         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
-    //         std::cout << screen[point.Y][point.X];
-    //     }
-    // }
-
-
     COORD point = {0,0};
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), point);
-    std::cout << screen_mem;
-
+    auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    // hide cursor
+    const CONSOLE_CURSOR_INFO console_cursor_info = {1,false};
+    SetConsoleCursorInfo(handle, &console_cursor_info);
+    // print
+    SetConsoleCursorPosition(handle, point);
+    std::cout << Screen_mem;
 }
 
 
 /**
- * @brief draw rectangle
+ * @brief draw rectangle in Screen_mem
  * @param in x - start x coord
  * @param in y - start y coord
  * @param in size_x - size on x coord
@@ -40,7 +35,7 @@ void Screen::draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch)
     {
         for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
         {
-            screen[cur_y][cur_x] = ch;
+            Screen_array[cur_y][cur_x] = ch;
         }
     }
 }
@@ -56,7 +51,7 @@ void Screen::draw_vertical_line(int x, int y, size_t size, char ch)
     int end_y = y + size;
     for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
     {
-        screen[cur_y][x] = ch;
+        Screen_array[cur_y][x] = ch;
     }
 }
 /**
@@ -71,7 +66,7 @@ void Screen::draw_horizontal_line(int x, int y, size_t size, char ch)
     int end_x = x + size;
     for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
     {
-        screen[y][cur_x] = ch;
+        Screen_array[y][cur_x] = ch;
     }
 }
 
@@ -98,7 +93,22 @@ void Screen::draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, cha
     draw_horizontal_line(x, y + size_y - 1, size_x, ch);
 
 }
+/**
+ * @brief get size of console window in chars
+ * @param out coord - size of console window
+ */
+void Screen::get_console_size(coord_t *coord)
+{
+    CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
+    if(GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &ConsoleScreenBufferInfo) )
+    {
+        coord->x = ConsoleScreenBufferInfo.srWindow.Right - ConsoleScreenBufferInfo.srWindow.Left + 1;
+        coord->y = ConsoleScreenBufferInfo.srWindow.Bottom - ConsoleScreenBufferInfo.srWindow.Top + 1;
+    }
+}
 
+
+//-------------------Old dummy methods---------------------
 /**
  * @brief draw arena object
  *              WARNING don't have any checks of arguments!
@@ -156,8 +166,8 @@ void Screen::draw_magic_circle(int d, align_t align)
                     cur_x = 0;
                 for(int j = 0; j < ((int)(A_x*2) | 1 ) && cur_x + j < Size.x; j++)
                 {
-                    screen[center_y - i][j + cur_x] = '%';
-                    screen[center_y + i][j + cur_x] = '%';
+                    Screen_array[center_y - i][j + cur_x] = '%';
+                    Screen_array[center_y + i][j + cur_x] = '%';
 
                 }
             }
@@ -172,8 +182,8 @@ void Screen::draw_magic_circle(int d, align_t align)
                     cur_x = 0;
                 for(int j = 0; j < ((int)(A_x*2.0)) && cur_x + j < Size.x; j++)
                 {
-                    screen[center_y - i][j + cur_x] = '%';
-                    screen[center_y + i + 1][j + cur_x] = '%';
+                    Screen_array[center_y - i][j + cur_x] = '%';
+                    Screen_array[center_y + i + 1][j + cur_x] = '%';
 
                 }
             }
@@ -211,16 +221,16 @@ void Screen::draw(Arena * arena, align_t align)
         int offset_y = (Size.y-overall_size.y)/2;
 
         //draw up wall
-        memset(screen[offset_y] + offset_x, '#', overall_size.x);
+        memset(Screen_array[offset_y] + offset_x, '#', overall_size.x);
 
         for(int i = 0; i<floor_size.y; i++)
         {
-            screen[offset_y + i + 1][offset_x] = '#';
-            memset(screen[offset_y + 1 + i] + offset_x + 1, '.', floor_size.x);
-            screen[offset_y + i + 1][offset_x + floor_size.x + 1] = '#';
+            Screen_array[offset_y + i + 1][offset_x] = '#';
+            memset(Screen_array[offset_y + 1 + i] + offset_x + 1, '.', floor_size.x);
+            Screen_array[offset_y + i + 1][offset_x + floor_size.x + 1] = '#';
         }
         //draw down wall
-        memset(screen[offset_y + floor_size.y + 1] + offset_x, '#', overall_size.x);
+        memset(Screen_array[offset_y + floor_size.y + 1] + offset_x, '#', overall_size.x);
         break;
     }
     case LEFT_UP:
@@ -230,12 +240,3 @@ void Screen::draw(Arena * arena, align_t align)
 
 
 
-void Screen::get_console_size(coord_t *coord)
-{
-    CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
-    if(GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &ConsoleScreenBufferInfo) )
-    {
-        coord->x = ConsoleScreenBufferInfo.srWindow.Right - ConsoleScreenBufferInfo.srWindow.Left + 1;
-        coord->y = ConsoleScreenBufferInfo.srWindow.Bottom - ConsoleScreenBufferInfo.srWindow.Top + 1;
-    }
-}

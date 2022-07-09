@@ -3,19 +3,19 @@
 #include "string.h"
 Arena::Arena(int x, int y)
 {
-    size.x = x;
-    size.y = y;
+    Size.x = x;
+    Size.y = y;
 }
 
 Arena::~Arena()
 {
 }
-//�������� ����� �� �����
+//Place unit on arena
 result_t Arena::place_unit(Unit* unit, int x, int y)
 {
-    if(x >= size.x)
+    if(x >= Size.x)
         return RESULT_ERROR;
-    if(y >= size.y)
+    if(y >= Size.y)
         return RESULT_ERROR;
 
     unit->set_place(this,x,y);

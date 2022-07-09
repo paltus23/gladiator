@@ -10,8 +10,6 @@ class Animal : public Unit
         Animal(string _name);
         virtual ~Animal();
 
-    protected:
-
     private:
 };
 

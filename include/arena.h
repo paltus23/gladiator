@@ -11,20 +11,18 @@ class Unit;
 class Arena
 {
     public:
-        Arena(int _x, int _y);
+        Arena(int x, int y);
         virtual ~Arena();
 
-        result_t place_unit(Unit* unit, int x, int y);
+        result_t place_unit(Unit* , int, int);
         void print_units();
 
-        void get_size(coord_t * s){memcpy(s, &size, sizeof(coord_t)); }
-        void get_coord(coord_t * s){memcpy(s, &coord, sizeof(coord_t)); }
-
-    protected:
+        void get_size(coord_t * s){memcpy(s, &Size, sizeof(coord_t)); }
+        void get_coord(coord_t * s){memcpy(s, &Coord, sizeof(coord_t)); }
 
     private:
-        coord_t coord; /// coordinate of left top cell
-        coord_t size;
+        coord_t Coord; /// coordinate of left top cell
+        coord_t Size;
 };
 
 #endif // ARENA_H

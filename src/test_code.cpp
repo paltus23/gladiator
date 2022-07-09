@@ -16,38 +16,14 @@
 
 void setColor(int colorBack, int colorFore)
 {
-    int back = 0;
-    if (colorBack & 1) back |= BACKGROUND_BLUE;
-    if (colorBack & 2) back |= BACKGROUND_GREEN;
-    if (colorBack & 4) back |= BACKGROUND_RED;
-    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
-
-    int fore = 0;
-    if (colorFore & 1) fore |= FOREGROUND_BLUE;
-    if (colorFore & 2) fore |= FOREGROUND_GREEN;
-    if (colorFore & 4) fore |= FOREGROUND_RED;
-    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
-
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), back | fore);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (colorBack << 4) | colorFore);
 }
 
 void change_colour(int colorBack, int colorFore, COORD dwWriteCoord)
 {
-    int back = 0;
-    if (colorBack & 1) back |= BACKGROUND_BLUE;
-    if (colorBack & 2) back |= BACKGROUND_GREEN;
-    if (colorBack & 4) back |= BACKGROUND_RED;
-    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
-
-    int fore = 0;
-    if (colorFore & 1) fore |= FOREGROUND_BLUE;
-    if (colorFore & 2) fore |= FOREGROUND_GREEN;
-    if (colorFore & 4) fore |= FOREGROUND_RED;
-    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
-    
     auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
     
-    WORD attr = back | fore;
+    WORD attr = (colorBack << 4) | colorFore;
 
     long unsigned int num;
     WriteConsoleOutputAttribute(  handle,  &attr,  1,  dwWriteCoord, &num);
@@ -272,40 +248,40 @@ void test_user_control()
 
 void test_print_simple_colour_rect()
 {
+    coord_t coord;
+    Screen::get_console_size(&coord);
+
+    Screen screen(coord.x, coord.y);
+
 
     auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
 
     int back = 0;
-    int colorBack = 0;
-    int colorFore = 4;
+    int fore = 4;
 
-    if (colorBack & 1) back |= BACKGROUND_BLUE;
-    if (colorBack & 2) back |= BACKGROUND_GREEN;
-    if (colorBack & 4) back |= BACKGROUND_RED;
-    if (colorBack & 8) back |= BACKGROUND_INTENSITY;
-
-    int fore = 0;
-    if (colorFore & 1) fore |= FOREGROUND_BLUE;
-    if (colorFore & 2) fore |= FOREGROUND_GREEN;
-    if (colorFore & 4) fore |= FOREGROUND_RED;
-    if (colorFore & 8) fore |= FOREGROUND_INTENSITY;
-    
-
-    
-    WORD attr = back | fore;
-
+    WORD attr = (back << 4)| fore;
+    //buffer of colour text would be printed like animation
     CHAR_INFO chars[20];
 
-    for(int i =0; i < 20; i++)
+    for(int i = 0; i < 20; i++)
     {
         chars[i].Attributes = attr;
         chars[i].Char.AsciiChar = 'a' + i;
     }
 
-    COORD dwBufferSize = {4, 5};
-    COORD dwBufferCoord = {0,0};
-    SMALL_RECT WriteRegion = {10,10,79,29};
 
-    auto res = WriteConsoleOutput(handle, chars, dwBufferSize, dwBufferCoord, &WriteRegion);
-    printf("%d %d %d %d %d \n", res, WriteRegion.Left, WriteRegion.Top, WriteRegion.Right, WriteRegion.Bottom);
+    for(int i = 0; i < 40; i++)
+    {
+        setColor(0, 8);
+        screen.fill('.');
+        screen.show();
+
+        COORD dwBufferSize = {4, 5};
+        COORD dwBufferCoord = {0,0};
+        SMALL_RECT WriteRegion = {0 + i,10,79,29};
+
+        auto res = WriteConsoleOutput(handle, chars, dwBufferSize, dwBufferCoord, &WriteRegion);
+
+        Sleep(150);
+    }
 }

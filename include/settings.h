@@ -11,9 +11,6 @@ class Settings
         int console_screen_size_x;
         int console_screen_size_y;
 
-    protected:
-
-
     private:
 };
 

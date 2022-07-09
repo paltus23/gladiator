@@ -9,35 +9,33 @@ class Screen
     public:
         typedef enum{CENTER, LEFT_UP} align_t;
 
-        char** screen; //for working like 2d array
-        char* screen_mem;
+        char** Screen_array; //for working like 2d array. creatse array of pointers and then this pointers point to lines of Screen_mem
+        char* Screen_mem;
         Screen(int x, int y)
         {
             Size.x = x;
             Size.y = y;
-            screen = (char**)malloc(Size.y * sizeof(char*));
-            screen_mem = (char*)malloc(Size.x*Size.y+1);
+            Screen_array = (char**)malloc(Size.y * sizeof(char*));
+            Screen_mem = (char*)malloc(Size.x*Size.y+1);
             for (int i=0; i <Size.y; i++)
             {
-                screen[i] = screen_mem + i*Size.x;
+                Screen_array[i] = Screen_mem + i*Size.x;
             }
-            screen_mem[Size.x*Size.y] = 0;
+            Screen_mem[Size.x*Size.y] = 0;
             clear();
         }
         ~Screen()
         {
-            free(screen);
-            free(screen_mem);
+            free(Screen_array);
+            free(Screen_mem);
         }
         coord_t Size;
 
 
         void fill(char ch)
         {
-            memset(screen_mem, (int)ch, Size.x*Size.y);
+            memset(Screen_mem, (int)ch, Size.x*Size.y);
         }
-        void draw(Arena * arena, align_t align = Screen::CENTER);
-        void draw_magic_circle(int d, align_t align = Screen::CENTER);
         void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
         void draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch);
 
@@ -46,9 +44,12 @@ class Screen
 
         void draw(int x, int y, Arena * arena);
 
-        void show()/*{ cout << screen_mem; }*/;
-        void clear(){memset(screen_mem, ' ', Size.x*Size.y);};
+        void show(); //Print Screen_mem to console
+        void clear(){memset(Screen_mem, ' ', Size.x*Size.y);}; //Fill Screen_mem with spaces
 
         static void get_console_size(coord_t *coord);
+//-------------------Old dummy methods---------------------
+        void draw(Arena * arena, align_t align = Screen::CENTER);
+        void draw_magic_circle(int d, align_t align = Screen::CENTER);
 };
 #endif // SCREEN_H

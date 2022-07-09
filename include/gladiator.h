@@ -10,8 +10,6 @@ class Gladiator : public Unit
         Gladiator(string _name);
         virtual ~Gladiator();
 
-    protected:
-
     private:
 };
 

@@ -12,12 +12,11 @@ class Arena;
 class Unit
 {
     public:
-        Unit(string _name = "unnamed");
+        Unit(string _name = "__unnamed__");
 
         virtual ~Unit();
         result_t set_place(Arena* _arena, unsigned _x, unsigned _y);
         string name;
-    protected:
 
     private:
         Arena* arena;
