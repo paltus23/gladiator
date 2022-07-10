@@ -2,11 +2,11 @@
 #define SETTINGS_H
 
 
-class Settings
+class Settings_t
 {
     public:
-        Settings();
-        virtual ~Settings();
+        Settings_t();
+        virtual ~Settings_t();
 
         int console_screen_size_x;
         int console_screen_size_y;

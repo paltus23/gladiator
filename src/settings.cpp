@@ -1,11 +1,11 @@
 #include "settings.h"
 
-Settings::Settings()
+Settings_t::Settings_t()
 {
     //ctor
 }
 
-Settings::~Settings()
+Settings_t::~Settings_t()
 {
     //dtor
 }

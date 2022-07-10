@@ -13,9 +13,9 @@ enum{
     KEY_RETURN = 0x0d,
 };
 
-User_control::Do()
+User_control_t::Do()
 {
-    cmd = NOTHING;
+    Cmd = NOTHING;
     if (_kbhit())
     {
         int key = _getch();
@@ -31,37 +31,36 @@ User_control::Do()
         case 'w':
         case 'W':
         {
-            std::cout << "Forward";
+            Cmd = UP;
             break;
         }
         case KEY_DOWN:
         case 's':
         case 'S':
         {
-            std::cout << "Back";
+            Cmd = DOWN;
             break;
         }
         case KEY_LEFT:
         case 'a':
         case 'A':
         {
-            std::cout << "Left";
+            Cmd = LEFT;
             break;
         }
         case KEY_RIGHT:
         case 'd':
         case 'D':
         {
-            std::cout << "Right";
+            Cmd = RIGHT;
             break;
         }
         case KEY_ESCAPE:
-            cmd = EXIT;
+            Cmd = EXIT;
             break;
         default:
             break;
         }
-        std::cout << "\n";
     }
 
 

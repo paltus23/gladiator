@@ -1,11 +1,11 @@
 #include "gladiator.h"
 
-Gladiator::Gladiator(string _name):Unit(_name)
+Gladiator_t::Gladiator_t(std::string name):Unit_t(name)
 {
     //ctor
 }
 
-Gladiator::~Gladiator()
+Gladiator_t::~Gladiator_t()
 {
     //dtor
 }

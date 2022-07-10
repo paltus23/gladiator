@@ -2,13 +2,14 @@
 #define GLADIATOR_H
 
 #include <unit.h>
+#include "string.h"
 #include "types.h"
 
-class Gladiator : public Unit
+class Gladiator_t : public Unit_t
 {
     public:
-        Gladiator(string _name);
-        virtual ~Gladiator();
+        Gladiator_t(std::string _name);
+        virtual ~Gladiator_t();
 
     private:
 };

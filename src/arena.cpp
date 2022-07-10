@@ -1,17 +1,17 @@
 #include "arena.h"
 #include <stdlib.h>
 #include "string.h"
-Arena::Arena(int x, int y)
+Arena_t::Arena_t(int x, int y)
 {
     Size.x = x;
     Size.y = y;
 }
 
-Arena::~Arena()
+Arena_t::~Arena_t()
 {
 }
 //Place unit on arena
-result_t Arena::place_unit(Unit* unit, int x, int y)
+result_t Arena_t::place_unit(Unit_t* unit, int x, int y)
 {
     if(x >= Size.x)
         return RESULT_ERROR;
@@ -22,6 +22,6 @@ result_t Arena::place_unit(Unit* unit, int x, int y)
     return RESULT_OK;
 }
 
-void Arena::print_units()
+void Arena_t::print_units()
 {
 }

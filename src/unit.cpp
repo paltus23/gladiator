@@ -1,21 +1,21 @@
 #include "unit.h"
 #include "types.h"
 
-Unit::Unit(string _name):name(_name)
+Unit_t::Unit_t(std::string name):Name(name)
 {
 //ctor
 }
 
-Unit::~Unit()
+Unit_t::~Unit_t()
 {
     //dtor
 }
 
-result_t Unit::set_place(Arena* _arena, unsigned _x, unsigned _y)
+result_t Unit_t::set_place(Arena_t* arena, unsigned x, unsigned y)
 {
-    arena = _arena;
-    x = _x;
-    y = _y;
+    Arena = arena;
+    X = x;
+    Y = y;
 
     return RESULT_OK;
 }

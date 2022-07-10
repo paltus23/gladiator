@@ -16,7 +16,7 @@
 void unit_test_search_way_out()
 {
     coord_t c = {20,20};
-    Ocean *ocean = new Ocean(c);
+    Ocean_t *ocean = new Ocean_t(c);
 
     area_t isle{
         {1, 1, 1, 0, 0, 0, 0, 0, 0},

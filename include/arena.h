@@ -4,17 +4,20 @@
 #include "unit.h"
 #include "types.h"
 #include <stdlib.h>
+#include <list>
 #include "string.h"
 
-class Unit;
+class Unit_t;
 
-class Arena
+class Arena_t
 {
     public:
-        Arena(int x, int y);
-        virtual ~Arena();
+        Arena_t(int x, int y);
+        virtual ~Arena_t();
 
-        result_t place_unit(Unit* , int, int);
+        std::list<Unit_t*> Unit_list;
+
+        result_t place_unit(Unit_t* , int, int);
         void print_units();
 
         void get_size(coord_t * s){memcpy(s, &Size, sizeof(coord_t)); }

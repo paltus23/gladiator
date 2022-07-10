@@ -1,12 +1,12 @@
 #include "animal.h"
 
 
-Animal::Animal(string _name)
+Animal_t::Animal_t(std::string name):Unit_t(name)
 {
     //ctor
 }
 
-Animal::~Animal()
+Animal_t::~Animal_t()
 {
     //dtor
 }

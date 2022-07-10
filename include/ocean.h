@@ -6,15 +6,15 @@
 
 /// Ocean is rectangle object, which store islands. Water is 0 and islands is positive numbers.
 /// Origin of coordinates is left-up corner
-class Ocean
+class Ocean_t
 {
     public:
-        Ocean(coord_t size);
-        virtual ~Ocean();
+        Ocean_t(coord_t size);
+        virtual ~Ocean_t();
         void create_random_isle(int num = 1, int cursor_x = -1, int cursor_y = -1, size_t area_size = 0);
         int add_isle(int x, int y, area_t isle);
 
-        static void print(Ocean * ocean);
+        static void print(Ocean_t * ocean);
         void search_way_out(int cur_x, int cur_y, coord_t& cursor_out);
 
         inline int get_cell(int x, int y) {return Ocean_area[y][x];};

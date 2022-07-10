@@ -29,21 +29,21 @@ void change_colour(int colorBack, int colorFore, COORD dwWriteCoord)
     WriteConsoleOutputAttribute(  handle,  &attr,  1,  dwWriteCoord, &num);
 }
 
-void print_ocean(Ocean *ocean)
+void print_ocean(Ocean_t *ocean)
 {
-    Ocean::print(ocean);
+    Ocean_t::print(ocean);
 }
 
 void test_print_colour_screen()
 {
-    Settings settings;
+    Settings_t settings;
     //set size of console window
     settings.console_screen_size_x = 120;
     settings.console_screen_size_y = 30;
 
-    Screen screen(settings.console_screen_size_x, settings.console_screen_size_y);
+    Screen_t screen(settings.console_screen_size_x, settings.console_screen_size_y);
 
-    Arena arena(50,20);
+    Arena_t arena(50,20);
 
 //    Gladiator hummy("Hummy");
 
@@ -95,7 +95,7 @@ void test_print_colour_screen()
 
 void test_draw_rectangle()
 {
-    Screen screen(50, 50);
+    Screen_t screen(50, 50);
 
     // screen.draw_rectangle(-2,-2,500,7,'v');
 
@@ -121,9 +121,9 @@ void test_fast_screen_show()
 {
 
     coord_t coord;
-    Screen::get_console_size(&coord);
+    Screen_t::get_console_size(&coord);
 
-    Screen screen(coord.x, coord.y);
+    Screen_t screen(coord.x, coord.y);
 
     // screen.draw_rectangle(-2,-2,500,7,'v');
 
@@ -155,7 +155,7 @@ void test_create_isle()
 {
 
     coord_t c = {10,10};
-    Ocean *ocean = new Ocean(c);
+    Ocean_t *ocean = new Ocean_t(c);
 
     // ocean->create_random_isle(3,2,2);
     // ocean->create_random_isle(4,2,2);
@@ -179,7 +179,7 @@ void test_create_isle()
 void test_search_way_out()
 {
     coord_t c = {10,10};
-    Ocean *ocean = new Ocean(c);
+    Ocean_t *ocean = new Ocean_t(c);
 
     area_t isle{
       // 0  1  2  3  4  5  6  7  8
@@ -237,11 +237,11 @@ void test_assign_vectors()
 
 void test_user_control()
 {
-    User_control user_control;
+    User_control_t user_control;
     while(1)
     {
         user_control.Do();
-        if (user_control.cmd == User_control::EXIT)
+        if (user_control.Cmd == User_control_t::EXIT)
             break;
     }
 }
@@ -249,9 +249,9 @@ void test_user_control()
 void test_print_simple_colour_rect()
 {
     coord_t coord;
-    Screen::get_console_size(&coord);
+    Screen_t::get_console_size(&coord);
 
-    Screen screen(coord.x, coord.y);
+    Screen_t screen(coord.x, coord.y);
 
 
     auto handle = GetStdHandle(STD_OUTPUT_HANDLE);

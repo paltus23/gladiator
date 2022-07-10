@@ -16,7 +16,7 @@
 
 int main()
 {
-    cout << "Start program!\n" << endl;
+    std::cout << "Start program!\n" << std::endl;
 
     dice_init();
 

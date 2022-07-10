@@ -1,22 +1,27 @@
 #pragma once
 
+#define DEBUG_LVL 0 
 
 
-class User_control
+
+class User_control_t
 {
     public:
-        enum
+        enum cmd_t
         {
             NOTHING,
+            UP,
+            DOWN,
+            LEFT, 
+            RIGHT,
             EXIT
         };
-        User_control(){}
-        ~User_control(){}
+        User_control_t(){}
+        ~User_control_t(){}
 
         Do();
-        int cmd;
-    protected:
-
+        get_cmd(){auto cmd = Cmd; Cmd = NOTHING; return cmd; }
+        cmd_t Cmd;
     private:
 
 };

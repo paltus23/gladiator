@@ -6,23 +6,23 @@
 
 #include <iostream>
 #include "string.h"
-using namespace std;
-class Arena;
 
-class Unit
+class Arena_t;
+
+class Unit_t
 {
     public:
-        Unit(string _name = "__unnamed__");
+        Unit_t(std::string _name = "__unnamed__");
 
-        virtual ~Unit();
-        result_t set_place(Arena* _arena, unsigned _x, unsigned _y);
-        string name;
-
+        virtual ~Unit_t();
+        result_t set_place(Arena_t* arena, unsigned x, unsigned y);
+        std::string Name;
+        virtual void move(coord_t *coord){X = coord->x; Y = coord->y;};
+        unsigned X, Y;
     private:
-        Arena* arena;
-        unsigned x, y;
-        int health;
-        int stamina;
+        Arena_t* Arena;
+        int Health;
+        int Stamina;
 
 
 };

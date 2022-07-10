@@ -4,11 +4,11 @@
 #include <Unit.h>
 
 
-class Animal : public Unit
+class Animal_t : public Unit_t
 {
     public:
-        Animal(string _name);
-        virtual ~Animal();
+        Animal_t(std::string name);
+        virtual ~Animal_t();
 
     private:
 };

@@ -2,7 +2,7 @@
 #include "dice.h"
 #include <iostream>
 
-Ocean::Ocean(coord_t size):Size(size)
+Ocean_t::Ocean_t(coord_t size):Size(size)
 {
     Ocean_area.resize(Size.x, std::vector<int>(Size.y));
     for(int i = 0; i < Size.x; i++)
@@ -14,7 +14,7 @@ Ocean::Ocean(coord_t size):Size(size)
     }
 }
 
-Ocean::~Ocean()
+Ocean_t::~Ocean_t()
 {
     //dtor
 }
@@ -25,7 +25,7 @@ Ocean::~Ocean()
 * @param in cur_x - start x cursor
 * @param in cur_y - start y cursor
 */
-void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
+void Ocean_t::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
 {
     cur_x = cur_x == -1 ? dice(Size.x) - 1 : cur_x;
     cur_y = cur_y == -1 ? dice(Size.y) - 1 : cur_y;
@@ -114,7 +114,7 @@ void Ocean::create_random_isle(int num, int cur_x, int cur_y, size_t area_size)
 * @param in cur_y - start y cursor
 * @param out cursor_out - finded nearby empty cell
 */
-void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
+void Ocean_t::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
 {
     // does cursor is in available area
     auto check_coord = [this](int cur_x, int cur_y)
@@ -202,7 +202,7 @@ void Ocean::search_way_out(int cur_x, int cur_y, coord_t& cursor_out)
 * @param in isle object of adding isle
 * @return -1 if isle not added else 1 if added
 */
-int Ocean::add_isle(int x, int y, area_t isle)
+int Ocean_t::add_isle(int x, int y, area_t isle)
 {
     if(x < 0 || y < 0 || x >= Size.x || y >= Size.y) return -1;
 
@@ -221,7 +221,7 @@ int Ocean::add_isle(int x, int y, area_t isle)
  * @brief
  * @param 
  */
-void Ocean::print(Ocean * ocean)
+void Ocean_t::print(Ocean_t * ocean)
 {
     for(std::vector<int> y : ocean->Ocean_area)
     {
