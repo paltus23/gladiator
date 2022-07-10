@@ -1,4 +1,5 @@
 #include "user_control.h"
+#include "game.h"
 #include "arena.h"
 #include "gladiator.h"
 #include "settings.h"
@@ -16,7 +17,7 @@
 
 int main()
 {
-    std::cout << "Start program!\n" << std::endl;
+    std::cout << "Start game GLADIATOR!\n" << std::endl;
 
     dice_init();
 
@@ -26,9 +27,12 @@ int main()
     // test_print_colour_screen();
 
     //test_user_control();;
-    test_fast_screen_show();
-    test_print_simple_colour_rect();
-    
+    // test_fast_screen_show();
+    // test_print_simple_colour_rect();
+    system("cls");
+
+    Game.Do();
+    std::cout << "End game GLADIATOR!\n" << std::endl;
     return 0;
 }
 

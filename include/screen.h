@@ -13,6 +13,7 @@ class Screen_t
         Screen_t(coord_t coord){ Screen_t(coord.x, coord.y); }
         Screen_t(int x, int y)
         {
+            //@todo add clear output
             Size.x = x;
             Size.y = y;
             Screen = (char**)malloc(Size.y * sizeof(char*));
@@ -31,11 +32,9 @@ class Screen_t
         }
         coord_t Size;
 
-
-        void fill(char ch)
-        {
-            memset(Screen_mem, (int)ch, Size.x*Size.y);
-        }
+        void print(int x, int y, char* chars);
+        void fill(char ch) { memset(Screen_mem, (int)ch, Size.x*Size.y); }
+        void draw_char(int x, int y, char ch);
         void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
         void draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch);
 

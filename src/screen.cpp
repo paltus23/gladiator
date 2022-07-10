@@ -16,7 +16,16 @@ void Screen_t::show()
     SetConsoleCursorPosition(handle, point);
     std::cout << Screen_mem;
 }
-
+/**
+ * @brief draw char in Screen_mem
+ * @param in x - x coord
+ * @param in y - y coord
+ * @param ch - character will be print
+ */
+void Screen_t::draw_char(int x, int y, char ch)
+{
+    Screen[y][x] = ch;
+}
 
 /**
  * @brief draw rectangle in Screen_mem
@@ -106,4 +115,11 @@ void Screen_t::get_console_size(coord_t *coord)
         coord->y = ConsoleScreenBufferInfo.srWindow.Bottom - ConsoleScreenBufferInfo.srWindow.Top + 1;
     }
 }
-
+/**
+ * @brief print string from "chars" to Screen_mem
+ * @param in chars - size of console window
+ */
+void Screen_t::print(int x, int y, char* chars)
+{
+    memcpy(&Screen[y][x], chars, strlen(chars));
+}

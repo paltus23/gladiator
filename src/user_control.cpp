@@ -15,7 +15,7 @@ enum{
 
 User_control_t::Do()
 {
-    Cmd = NOTHING;
+    //Cmd = NOTHING;
     if (_kbhit())
     {
         int key = _getch();

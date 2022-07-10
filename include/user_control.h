@@ -16,7 +16,7 @@ class User_control_t
             RIGHT,
             EXIT
         };
-        User_control_t(){}
+        User_control_t(){Cmd = NOTHING;}
         ~User_control_t(){}
 
         Do();
