@@ -17,7 +17,7 @@ class Unit_t
         virtual ~Unit_t();
         result_t set_place(Arena_t* arena, unsigned x, unsigned y);
         std::string Name;
-        virtual void move(coord_t *coord){X = coord->x; Y = coord->y;};
+        virtual bool move(coord_t *coord);
         unsigned X, Y;
     private:
         Arena_t* Arena;
