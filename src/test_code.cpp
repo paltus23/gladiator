@@ -234,6 +234,17 @@ void test_assign_vectors()
     }
 }
 
+/**
+*
+*/
+void test_creating_vectors()
+{
+    std::vector<int> x1(50);
+
+    auto s = x1.size();
+
+    printf("Size of x1 is %d", s);
+}
 
 void test_user_control()
 {
