@@ -123,3 +123,41 @@ void Screen_t::print(int x, int y, char* chars)
 {
     memcpy(&Screen[y][x], chars, strlen(chars));
 }
+
+/**
+ * @brief draw arena
+ * @param in arena - 
+ * @param in x - start x coord
+ * @param in y - start y coord
+ */
+void Screen_t::draw(Arena_t& arena, int start_x, int start_y)
+{
+    coord_t size;
+    arena.get_size(&size);
+
+    for (int i = 0; i < size.x; i++)
+    {
+        if( (i + start_x) < 0 || (i + start_x >= Size.x) )
+            continue;
+        for (int j = 0; j < size.y; j++)
+        {
+            if( (j + start_y) < 0 || (j + start_y >= Size.y) )
+                continue;
+            
+            char ch = '?';
+
+            switch(arena.Cells2[i][j])
+            {
+                case Arena_t::NOTHING: ch = ' '; break;
+                case Arena_t::WALL: ch = '#'; break;
+                case Arena_t::FLOOR: ch = '.'; break;
+            }
+            
+            Screen[j + start_y][i + start_x] = ch;
+
+        }
+
+    }
+
+
+}

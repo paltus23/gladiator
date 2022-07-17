@@ -41,6 +41,7 @@ class Screen_t
         void draw_vertical_line(int x, int y, size_t size, char ch);
         void draw_horizontal_line(int x, int y, size_t size, char ch);
 
+        void draw(Arena_t& arena, int start_x = 0, int start_y = 0);
         void draw(int x, int y, Arena_t * arena);
 
         void show(); //Print Screen_mem to console
