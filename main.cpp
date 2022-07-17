@@ -29,7 +29,8 @@ int main()
     //test_user_control();;
     // test_fast_screen_show();
     // test_print_simple_colour_rect();
-    system("cls");
+    // test_creating_vectors();
+    // system("cls");
 
     Game.Do();
     std::cout << "End game GLADIATOR!\n" << std::endl;
