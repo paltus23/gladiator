@@ -1,5 +1,4 @@
 #include "screen.h"
-#include "windows.h"
 #include <cmath>
 
 /**
@@ -9,22 +8,35 @@ void Screen_t::show()
 {
     COORD point = {0,0};
     auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    // hide cursor
-    const CONSOLE_CURSOR_INFO console_cursor_info = {1,false};
-    SetConsoleCursorInfo(handle, &console_cursor_info);
     // print
     SetConsoleCursorPosition(handle, point);
-    std::cout << Screen_mem;
+    // std::cout << Screen_mem;
+
+    COORD dwBufferSize = {Size.x, Size.y};
+    COORD dwBufferCoord = {0,0};
+    SMALL_RECT writeRegion = {0,0,Size.x - 1, Size.y - 1};
+
+    auto res = WriteConsoleOutput(handle, Screen_mem, dwBufferSize, dwBufferCoord, &writeRegion);
+}
+
+void Screen_t::draw_char(int x, int y, CHAR_INFO ch)
+{
+    memcpy(&Screen[y][x], &ch, sizeof(CHAR_INFO) );
 }
 /**
  * @brief draw char in Screen_mem
  * @param in x - x coord
  * @param in y - y coord
- * @param ch - character will be print
+ * @param in ch - character will be print
+ * @param in colorFore - character will be print
+ * @param in colorBack - character will be print
  */
-void Screen_t::draw_char(int x, int y, char ch)
+void Screen_t::draw_char(int x, int y, char ch, int colorFore, int colorBack)
 {
-    Screen[y][x] = ch;
+    CHAR_INFO cc; 
+    cc.Char.AsciiChar = ch;
+    cc.Attributes = (colorBack << 4) | colorFore; 
+    draw_char(x, y, cc);
 }
 
 /**
@@ -44,7 +56,7 @@ void Screen_t::draw_rectangle(int x, int y, size_t size_x, size_t size_y, char c
     {
         for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
         {
-            Screen[cur_y][cur_x] = ch;
+            Screen[cur_y][cur_x].Char.AsciiChar = ch;
         }
     }
 }
@@ -60,7 +72,7 @@ void Screen_t::draw_vertical_line(int x, int y, size_t size, char ch)
     int end_y = y + size;
     for(int cur_y = y<0 ? 0 : y; cur_y<Size.y && cur_y<end_y; cur_y++)
     {
-        Screen[cur_y][x] = ch;
+        Screen[cur_y][x].Char.AsciiChar = ch;
     }
 }
 /**
@@ -75,7 +87,7 @@ void Screen_t::draw_horizontal_line(int x, int y, size_t size, char ch)
     int end_x = x + size;
     for(int cur_x = x<0 ? 0 : x; cur_x<Size.x && cur_x<end_x; cur_x++)
     {
-        Screen[y][cur_x] = ch;
+        Screen[y][cur_x].Char.AsciiChar = ch;
     }
 }
 
@@ -153,11 +165,16 @@ void Screen_t::draw(Arena_t& arena, int start_x, int start_y)
                 case Arena_t::FLOOR: ch = '.'; break;
             }
             
-            Screen[j + start_y][i + start_x] = ch;
-
+            Screen[j + start_y][i + start_x].Char.AsciiChar = ch;
         }
-
     }
-
-
 }
+
+//Fill Screen_mem with spaces
+void Screen_t::clear()
+{
+    CHAR_INFO ch; 
+    ch.Char.AsciiChar = ' ';
+    ch.Attributes = WHITE;
+    fill(ch);
+}; 

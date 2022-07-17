@@ -1,7 +1,5 @@
 #include "game.h"
 
-
-
 void Game_t::Do()
 {
     //Screen.fill('.');
@@ -9,7 +7,7 @@ void Game_t::Do()
     arena.simple_construct();
     arena.place_unit(&Gladiator, 2,2);
     Screen.draw(arena);
-    Screen.draw_char(Gladiator.X,Gladiator.Y, '@');
+    Screen.draw_char(Gladiator.X,Gladiator.Y, '@', Screen_t::RED, Screen_t::BLACK);
     Screen.show();
     while(1)
     {
@@ -20,9 +18,6 @@ void Game_t::Do()
         auto cmd = User_control.get_cmd();
         coord_t coord = {Gladiator.X,Gladiator.Y};
 
-        char buff[100];
-        sprintf(buff, "gladiator before x: %d, y: %d", coord.x, coord.y);
-        Screen.print(0, 20, buff);
 
         if(cmd != User_control_t::NOTHING)
         {
@@ -51,18 +46,11 @@ void Game_t::Do()
             
             Gladiator.move(&coord);
 
-            
-            sprintf(buff, "gladiator after x: %d, y: %d", coord.x, coord.y);
-            Screen.print(0, 21, buff);
-
             Screen.draw(arena);
-            Screen.draw_char(coord.x, coord.y, '@');
-
+            Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
 
             Screen.show();
         }
-
-
     }
 }
 

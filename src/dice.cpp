@@ -15,7 +15,7 @@ void dice_init()
 int dice(int base)
 {
     /** here we have a problem with not equal probability for different cases in dice.
-    * Let's say what rand() have normal distribution. Then we divide range of possible
+    * Let's say what rand() have uniform distribution. Then we divide range of possible
     * numbers into equal ranges. But since we work with range integers, after divide and round,
     * this ranges have different count of numbers.
     * So we have different probability for different ranges.
@@ -25,7 +25,8 @@ int dice(int base)
 
     int random_variable;
     while( (random_variable = std::rand()) > actual_rand_max);
-        random_variable = random_variable%base + 1;
+        
+    random_variable = random_variable%base + 1;
 
     return random_variable;
 }

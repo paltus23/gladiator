@@ -21,7 +21,7 @@ result_t Unit_t::set_place(Arena_t* arena, unsigned x, unsigned y)
 }
 /**
  * @brief move unit in room
- * @param in coord - coordinate of new position
+ * @param coord in/out - coordinate of new position
  * @return if the move happened, return true
 */
 bool Unit_t::move(coord_t *coord)

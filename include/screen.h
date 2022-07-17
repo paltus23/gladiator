@@ -3,27 +3,64 @@
 
 #include "arena.h"
 #include "types.h"
+#include "windows.h"
+
+// typedef struct _CHAR_INFO {
+//   union {
+//     WCHAR UnicodeChar;
+//     CHAR  AsciiChar;
+//   } Char;
+//   WORD  Attributes;
+// } CHAR_INFO, *PCHAR_INFO;
+
 
 class Screen_t
 {
     public:
+        enum COLOURS
+        {
+            BLACK   = 0,
+            BLUE    = 0x1,
+            GREEN   = 0x2,
+            CYAN    = 0x3,
+            RED     = 0x4,
+            YELLOW  = 0x5,
+            MAGENTA = 0x6,
+            WHITE   = 0x7,
 
-        char** Screen; //for working like 2d array. creatse array of pointers and then this pointers point to lines of Screen_mem
-        char* Screen_mem;
+            BRIGHT_BLACK   = BLACK   + 0x08,
+            BRIGHT_BLUE    = BLUE    + 0x08,
+            BRIGHT_GREEN   = GREEN   + 0x08,
+            BRIGHT_CYAN    = CYAN    + 0x08,
+            BRIGHT_RED     = RED     + 0x08,
+            BRIGHT_YELLOW  = YELLOW  + 0x08,
+            BRIGHT_MAGENTA = MAGENTA + 0x08,
+            BRIGHT_WHITE   = WHITE   + 0x08
+        };
+
+        CHAR_INFO** Screen; //for working like 2d array. creatse array of pointers and then this pointers point to lines of Screen_mem
+        CHAR_INFO* Screen_mem;
         Screen_t(coord_t coord){ Screen_t(coord.x, coord.y); }
         Screen_t(int x, int y)
         {
             //@todo add clear output
             Size.x = x;
             Size.y = y;
-            Screen = (char**)malloc(Size.y * sizeof(char*));
-            Screen_mem = (char*)malloc(Size.x*Size.y+1);
+            Screen = (CHAR_INFO**)malloc(Size.y * sizeof(CHAR_INFO*));
+            Screen_mem = (CHAR_INFO*)malloc( (Size.x*Size.y+1) * sizeof(CHAR_INFO));
             for (int i=0; i <Size.y; i++)
             {
                 Screen[i] = Screen_mem + i*Size.x;
             }
-            Screen_mem[Size.x*Size.y] = 0;
+            Screen_mem[Size.x*Size.y].Char.AsciiChar = (CHAR)0;
+
+            //clear Screen
             clear();
+
+            // hide cursor
+            auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+            const CONSOLE_CURSOR_INFO console_cursor_info = {1,false};
+            SetConsoleCursorInfo(handle, &console_cursor_info);
         }
         ~Screen_t()
         {
@@ -33,8 +70,17 @@ class Screen_t
         coord_t Size;
 
         void print(int x, int y, char* chars);
-        void fill(char ch) { memset(Screen_mem, (int)ch, Size.x*Size.y); }
-        void draw_char(int x, int y, char ch);
+        void fill(char _ch, int colorFore = WHITE, int colorBack = BLACK) 
+        {
+            CHAR_INFO ch;
+            ch.Char.AsciiChar = _ch;
+            ch.Attributes = (colorBack << 4) | colorFore; 
+            fill(ch); 
+        }
+
+        void fill(CHAR_INFO ch) { std::fill(Screen_mem, Screen_mem + Size.x*Size.y, ch);}
+        void draw_char(int x, int y, char ch, int colorFore = WHITE, int colorBack = BLACK);
+        void draw_char(int x, int y, CHAR_INFO ch);
         void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
         void draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch);
 
@@ -45,7 +91,7 @@ class Screen_t
         void draw(int x, int y, Arena_t * arena);
 
         void show(); //Print Screen_mem to console
-        void clear(){memset(Screen_mem, ' ', Size.x*Size.y);}; //Fill Screen_mem with spaces
+        void clear(); //Fill Screen_mem with spaces
 
         static void get_console_size(coord_t *coord);
 };
