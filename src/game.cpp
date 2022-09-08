@@ -1,57 +1,129 @@
 #include "game.h"
 
-void Game_t::Do()
+int Game_t::Do()
 {
-    //Screen.fill('.');
-    Arena_t arena(10, 10);
-    arena.simple_construct();
-    arena.place_unit(&Gladiator, 2,2);
-    Screen.draw(arena);
-    Screen.draw_char(Gladiator.X,Gladiator.Y, '@', Screen_t::RED, Screen_t::BLACK);
-    Screen.show();
-    while(1)
+    User_control.Do();
+
+    auto cmd = User_control.get_cmd();
+    
+    
+
+    switch (State)
     {
-        User_control.Do();
+    case STATE_START_MENU:
+        /* code */
 
-        Screen.fill(' ');
+        Menu.Do((User_control_t::cmd_t)cmd);
+        Screen.clear();
+        Screen.draw(Menu, 1, 1);
 
-        auto cmd = User_control.get_cmd();
-        coord_t coord = {Gladiator.X,Gladiator.Y};
-
-
-        if(cmd != User_control_t::NOTHING)
+        if(cmd == User_control_t::ENTER)
         {
-            if(cmd == User_control_t::EXIT)
+            if(Menu.Get_cursor() == Menu_t::START_GAME)
             {
-                break;
+                State = STATE_BATTLE;
+                Gladiator = new Gladiator_t("Player");
+                Arena = new Arena_t(10, 10);
+                Arena->simple_construct();
+                Arena->place_unit(Gladiator, 2,2);
+                Screen.clear();
+                Screen.draw(*Arena);
+                Screen.draw_char(Gladiator->X,Gladiator->Y, '@', Screen_t::RED, Screen_t::BLACK);
+                Screen.show();
             }
-
-            switch (cmd)
+            if(Menu.Get_cursor() == Menu_t::EXIT)
             {
-            case User_control_t::LEFT:
-                coord.x--;
-                break;
-            case User_control_t::RIGHT:
-                coord.x++;
-                break;
-            case User_control_t::UP:
-                coord.y--;
-                break;
-            case User_control_t::DOWN:
-                coord.y++;
-                break;
-            default:
-                break;
+                State = STATE_FINISH_GAME;
             }
-            
-            Gladiator.move(&coord);
-
-            Screen.draw(arena);
-            Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
-
-            Screen.show();
         }
+
+        if(cmd == User_control_t::EXIT)
+        {
+            State = STATE_FINISH_GAME;
+        }
+
+        Screen.show();
+        break;
+    case STATE_BATTLE:
+        {
+            Screen.fill(' ');
+
+            coord_t coord = {Gladiator->X,Gladiator->Y};
+
+            if(cmd != User_control_t::NOTHING)
+            {
+                if(cmd == User_control_t::EXIT)
+                {
+                    State = STATE_START_MENU;
+                    break;
+                }
+
+                switch (cmd)
+                {
+                case User_control_t::LEFT:
+                    coord.x--;
+                    break;
+                case User_control_t::RIGHT:
+                    coord.x++;
+                    break;
+                case User_control_t::UP:
+                    coord.y--;
+                    break;
+                case User_control_t::DOWN:
+                    coord.y++;
+                    break;
+                default:
+                    break;
+                }
+                
+                Gladiator->move(&coord);
+
+                Screen.draw(*Arena);
+                Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
+
+                Screen.show();
+            }
+        }
+        break;
+
+    case STATE_FINISH_BATTLE:
+        /* code */
+        break;
+    case STATE_FINISH_GAME:
+        /* code */
+        Screen.clear();
+        Screen.show();
+        return 1;
+        break;
+    default:
+        break;
     }
+    return 0;
 }
 
+void Game_t::Init()
+{
+    Menu.Set_state(Menu_t::STATE_START_MENU);
+}
+
+void Game_t::Do_fighting()
+{
+}
+
+
+void Game_t::Process_fighting_step()
+{
+}
+
+void Game_t::Do_walk()
+{
+}
+
+Game_t::~Game_t()
+{
+    if(Gladiator)
+        delete Gladiator;
+    if(Arena)
+        delete Arena;
+}
 Game_t Game;

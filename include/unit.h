@@ -13,16 +13,16 @@ class Unit_t
 {
     public:
         Unit_t(std::string _name = "__unnamed__");
-
         virtual ~Unit_t();
-        result_t set_place(Arena_t* arena, unsigned x, unsigned y);
-        std::string Name;
-        virtual bool move(coord_t *coord);
-        unsigned X, Y;
-    private:
-        Arena_t* Arena;
-        int Health;
-        int Stamina;
+
+        void set_place(Arena_t* arena, int x, int y);   ///> place unit in arena
+        std::string Name;                               ///> name of unit
+        virtual bool move(coord_t *coord);              ///> move unit to new coordinate
+        int X, Y;                                       ///> coordinate of unit
+    protected:
+        Arena_t* Arena;                                 ///> which arena have unit
+        int Health;                                     ///> health point of unit
+        int Stamina;                                    ///> stamina points of unit
 
 
 };

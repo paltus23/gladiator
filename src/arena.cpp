@@ -19,6 +19,7 @@ Arena_t::Arena_t(int x, int y) : Size((coord_t){x,y})
     }
 
     Cells2.resize(Size.x);
+    ///@todo
     //what happpend if OS do not allocate memory for vector??
     for(auto i = 0; i < Size.x; i++)
     {
@@ -26,7 +27,7 @@ Arena_t::Arena_t(int x, int y) : Size((coord_t){x,y})
     }
 
 }
-
+/// Destructor
 Arena_t::~Arena_t()
 {
 }

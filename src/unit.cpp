@@ -1,7 +1,11 @@
 #include "unit.h"
 #include "types.h"
 
-Unit_t::Unit_t(std::string name):Name(name)
+Unit_t::Unit_t(std::string name):
+    Name(name),
+    Arena(nullptr),
+    X(-1),
+    Y(-1)
 {
 //ctor
 }
@@ -10,14 +14,19 @@ Unit_t::~Unit_t()
 {
     //dtor
 }
-
-result_t Unit_t::set_place(Arena_t* arena, unsigned x, unsigned y)
+/**
+ * @brief place unit in arena
+ * @param in arena - 
+ * @param in x - coordinate x of unit
+ * @param in y - coordinate y of unit
+*/
+void Unit_t::set_place(Arena_t* arena, int x, int y)
 {
     Arena = arena;
     X = x;
     Y = y;
 
-    return RESULT_OK;
+    return;
 }
 /**
  * @brief move unit in room

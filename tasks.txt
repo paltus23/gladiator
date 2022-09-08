@@ -1,0 +1,1 @@
+Remake Screen_t for auto-adjust to window size

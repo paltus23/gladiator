@@ -32,7 +32,11 @@ int main()
     // test_creating_vectors();
     // system("cls");
 
-    Game.Do();
+    while(1)
+    {
+        if(Game.Do())
+            break;
+    }
     std::cout << "End game GLADIATOR!\n" << std::endl;
     return 0;
 }

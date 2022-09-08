@@ -3,22 +3,48 @@
 #include "gladiator.h"
 #include "screen.h"
 #include "string.h"
+#include "menu.h"
 
+/** the Game process is divided into several modes
+ * 1 - fighting mode 
+ * 2 - walking mode
+*/
 class Game_t
 {
-    public:
-        int cc; 
-        User_control_t User_control;
-        Gladiator_t Gladiator;
-        Arena_t Arena{10, 10};
-        Screen_t Screen;
+    private:
+        enum State_t
+        {
+            STATE_START_MENU,
+            STATE_BATTLE,
+            STATE_FINISH_BATTLE,
+            STATE_FINISH_GAME
+        };
 
-        Game_t():Gladiator("Player"), Screen(120,30)
-        { 
-            Arena.place_unit(&Gladiator, 5,5);
+    public:
+        User_control_t User_control;
+        Menu_t Menu;
+        Gladiator_t *Gladiator;
+        Arena_t *Arena;
+        Screen_t Screen;
+        State_t State;
+
+
+        ///@todo remove create Screen and make auto-adjust for size of window
+        Game_t():Screen(120,30)
+        {
+            State = STATE_START_MENU;
+            Menu.Set_state(Menu_t::STATE_START_MENU);
         }
 
-        void Do();
+        ~Game_t();
+
+        int Do();
+        void Do_fighting();                     ///> planning the next step with walking steps and hits
+        void Process_fighting_step();           ///> process step after finish planning
+        void Do_walk();                         ///> play mode when main player walks in search of new enemy
+        void Init();
+
+
 };
 
 extern Game_t Game;
