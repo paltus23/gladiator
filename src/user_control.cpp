@@ -10,6 +10,7 @@ enum{
     KEY_LEFT = KEY_CODE * 256 + 0x4b,
     KEY_RIGHT = KEY_CODE * 256 + 0x4d,
     KEY_ESCAPE = 0x1b,
+    KEY_ENTER = 0x0d,
     KEY_RETURN = 0x0d,
 };
 
@@ -55,6 +56,9 @@ User_control_t::Do()
             Cmd = RIGHT;
             break;
         }
+        case KEY_ENTER:
+            Cmd = ENTER;
+            break;
         case KEY_ESCAPE:
             Cmd = EXIT;
             break;

@@ -14,6 +14,7 @@ class User_control_t
             DOWN,
             LEFT, 
             RIGHT,
+            ENTER,
             EXIT
         };
         User_control_t(){Cmd = NOTHING;}
