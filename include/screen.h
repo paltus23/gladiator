@@ -4,6 +4,7 @@
 #include "arena.h"
 #include "types.h"
 #include "windows.h"
+#include "menu.h"
 
 // typedef struct _CHAR_INFO {
 //   union {
@@ -67,19 +68,19 @@ class Screen_t
             free(Screen);
             free(Screen_mem);
         }
-        coord_t Size;
+        coord_t Size;       ///size of screen
 
         void print(int x, int y, char* chars);
-        void fill(char _ch, int colorFore = WHITE, int colorBack = BLACK) 
+        void fill(char _ch, int color_fore = WHITE, int color_back = BLACK) 
         {
             CHAR_INFO ch;
             ch.Char.AsciiChar = _ch;
-            ch.Attributes = (colorBack << 4) | colorFore; 
+            ch.Attributes = (color_back << 4) | color_fore; 
             fill(ch); 
         }
 
         void fill(CHAR_INFO ch) { std::fill(Screen_mem, Screen_mem + Size.x*Size.y, ch);}
-        void draw_char(int x, int y, char ch, int colorFore = WHITE, int colorBack = BLACK);
+        void draw_char(int x, int y, char ch, int color_fore = WHITE, int color_back = BLACK);
         void draw_char(int x, int y, CHAR_INFO ch);
         void draw_rectangle(int x, int y, size_t size_x, size_t size_y, char ch);
         void draw_rectangle_edge(int x, int y, size_t size_x, size_t size_y, char ch);
@@ -89,6 +90,7 @@ class Screen_t
 
         void draw(Arena_t& arena, int start_x = 0, int start_y = 0);
         void draw(int x, int y, Arena_t * arena);
+        void draw(Menu_t &menu, int x, int y, int color_fore = WHITE, int color_back = BLACK);
 
         void show(); //Print Screen_mem to console
         void clear(); //Fill Screen_mem with spaces

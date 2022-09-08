@@ -31,11 +31,11 @@ void Screen_t::draw_char(int x, int y, CHAR_INFO ch)
  * @param in colorFore - character will be print
  * @param in colorBack - character will be print
  */
-void Screen_t::draw_char(int x, int y, char ch, int colorFore, int colorBack)
+void Screen_t::draw_char(int x, int y, char ch, int color_fore, int color_back)
 {
     CHAR_INFO cc; 
     cc.Char.AsciiChar = ch;
-    cc.Attributes = (colorBack << 4) | colorFore; 
+    cc.Attributes = (color_back << 4) | color_fore; 
     draw_char(x, y, cc);
 }
 
@@ -178,3 +178,55 @@ void Screen_t::clear()
     ch.Attributes = WHITE;
     fill(ch);
 }; 
+
+// draw active menu on special coordinate, x and y is coordinate of left-up corner of menu 
+/// @brief 
+/// @param menu 
+/// @param x 
+/// @param y 
+/// @param color_fore 
+/// @param color_back
+void Screen_t::draw(Menu_t &menu, int x, int y, int color_fore, int color_back)
+{
+    auto cursor = menu.Get_cursor();
+    auto menu_str = menu.Get_menu_str();
+    auto cursor_max = menu.Get_cursor_max();
+    if(menu_str == nullptr)
+        return;
+
+
+    int max_len = strlen(menu_str[0]);
+    for(int i = 1; i < cursor_max; i++)
+    {
+        if(strlen(menu_str[i]) > max_len)
+            max_len = strlen(menu_str[i]);
+    }
+
+    /// check if string fits
+    if(max_len > (Size.x - x))
+        max_len = Size.x - x;
+
+    auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    WORD attr = (color_back << 4)| color_fore;
+    WORD inverse_attr = (color_fore << 4)| color_back;
+
+    for(int i = 0; i < cursor_max; i++)
+    {
+        const char* p = menu_str[i];
+        WORD _attr = (i != cursor) ? attr : inverse_attr; ///choose appropriate style for cursor
+
+
+        for(int cur = 0; cur < strlen(menu_str[i]); cur++)
+        {
+            Screen[y + i*2][x + cur].Attributes = _attr;
+            Screen[y + i*2][x + cur].Char.AsciiChar = p[cur];
+        }
+        for(int cur = strlen(menu_str[i]); cur < max_len; cur++)
+        {
+            Screen[y + i*2][x + cur].Attributes = _attr;
+            Screen[y + i*2][x + cur].Char.AsciiChar = ' ';
+        }
+
+    }
+}
