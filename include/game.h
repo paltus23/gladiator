@@ -20,6 +20,7 @@ class Game_t
             STATE_FINISH_GAME
         };
 
+        User_control_t::cmd_t Cmd;
     public:
         User_control_t User_control;
         Menu_t Menu;
@@ -39,11 +40,10 @@ class Game_t
         ~Game_t();
 
         int Do();
-        void Do_fighting();                     ///> planning the next step with walking steps and hits
+        void Do_battle();                     ///> planning the next step with walking steps and hits
         void Process_fighting_step();           ///> process step after finish planning
         void Do_walk();                         ///> play mode when main player walks in search of new enemy
         void Init();
-
 
 };
 

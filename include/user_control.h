@@ -21,7 +21,7 @@ class User_control_t
         ~User_control_t(){}
 
         Do();
-        get_cmd(){auto cmd = Cmd; Cmd = NOTHING; return cmd; }
+        cmd_t get_cmd(){auto cmd = Cmd; Cmd = NOTHING; return cmd; }
         cmd_t Cmd;
     private:
 

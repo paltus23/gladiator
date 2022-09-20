@@ -1,23 +1,26 @@
 #include "game.h"
 
+void Game_t::Init()
+{
+    Menu.Set_state(Menu_t::STATE_START_MENU);
+}
+
 int Game_t::Do()
 {
     User_control.Do();
-
-    auto cmd = User_control.get_cmd();
+    Cmd = User_control.get_cmd();
     
     
 
     switch (State)
     {
     case STATE_START_MENU:
-        /* code */
 
-        Menu.Do((User_control_t::cmd_t)cmd);
+        Menu.Do((User_control_t::cmd_t)Cmd);
         Screen.clear();
         Screen.draw(Menu, 1, 1);
 
-        if(cmd == User_control_t::ENTER)
+        if(Cmd == User_control_t::ENTER)
         {
             if(Menu.Get_cursor() == Menu_t::START_GAME)
             {
@@ -37,7 +40,7 @@ int Game_t::Do()
             }
         }
 
-        if(cmd == User_control_t::EXIT)
+        if(Cmd == User_control_t::EXIT)
         {
             State = STATE_FINISH_GAME;
         }
@@ -45,52 +48,11 @@ int Game_t::Do()
         Screen.show();
         break;
     case STATE_BATTLE:
-        {
-            Screen.fill(' ');
-
-            coord_t coord = {Gladiator->X,Gladiator->Y};
-
-            if(cmd != User_control_t::NOTHING)
-            {
-                if(cmd == User_control_t::EXIT)
-                {
-                    State = STATE_START_MENU;
-                    break;
-                }
-
-                switch (cmd)
-                {
-                case User_control_t::LEFT:
-                    coord.x--;
-                    break;
-                case User_control_t::RIGHT:
-                    coord.x++;
-                    break;
-                case User_control_t::UP:
-                    coord.y--;
-                    break;
-                case User_control_t::DOWN:
-                    coord.y++;
-                    break;
-                default:
-                    break;
-                }
-                
-                Gladiator->move(&coord);
-
-                Screen.draw(*Arena);
-                Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
-
-                Screen.show();
-            }
-        }
+        Do_battle();
         break;
-
     case STATE_FINISH_BATTLE:
-        /* code */
         break;
     case STATE_FINISH_GAME:
-        /* code */
         Screen.clear();
         Screen.show();
         return 1;
@@ -101,13 +63,44 @@ int Game_t::Do()
     return 0;
 }
 
-void Game_t::Init()
-{
-    Menu.Set_state(Menu_t::STATE_START_MENU);
-}
 
-void Game_t::Do_fighting()
+
+void Game_t::Do_battle()
 {
+    Screen.fill(' ');
+
+    coord_t coord = {Gladiator->X,Gladiator->Y};
+
+    if(Cmd != User_control_t::NOTHING)
+    {
+        if(Cmd == User_control_t::EXIT)
+        {
+            State = STATE_START_MENU;
+            return;
+        }
+
+        switch (Cmd)
+        {
+        case User_control_t::LEFT:  coord.x--; break;
+        case User_control_t::RIGHT: coord.x++; break;
+        case User_control_t::UP:    coord.y--; break;
+        case User_control_t::DOWN:  coord.y++; break;
+        default: break;
+        }
+        
+        Gladiator->move(&coord);
+
+
+        Enemy->move(&coord);
+
+
+
+
+        Screen.draw(*Arena);
+        Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
+
+        Screen.show();
+    }
 }
 
 
