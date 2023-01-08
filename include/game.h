@@ -25,7 +25,7 @@ class Game_t
         User_control_t User_control;
         Menu_t Menu;
         Gladiator_t *Gladiator;
-        Arena_t *Arena;
+        Room_t *Arena;
         Screen_t Screen;
         State_t State;
 

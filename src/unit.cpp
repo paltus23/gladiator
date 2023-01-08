@@ -20,7 +20,7 @@ Unit_t::~Unit_t()
  * @param in x - coordinate x of unit
  * @param in y - coordinate y of unit
 */
-void Unit_t::set_place(Arena_t* arena, int x, int y)
+void Unit_t::set_place(Room_t* arena, int x, int y)
 {
     Arena = arena;
     X = x;
@@ -44,7 +44,7 @@ bool Unit_t::move(coord_t *coord)
     coord->y < arena_size.y )
     {
         auto cell = Arena->Cells2[coord->x][coord->y];
-        if(cell != Arena_t::NOTHING && cell != Arena_t::WALL)
+        if(cell != Room_t::NOTHING && cell != Room_t::WALL)
         {
             X = coord->x; 
             Y = coord->y;

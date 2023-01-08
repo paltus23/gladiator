@@ -142,7 +142,7 @@ void Screen_t::print(int x, int y, char* chars)
  * @param in x - start x coord
  * @param in y - start y coord
  */
-void Screen_t::draw(Arena_t& arena, int start_x, int start_y)
+void Screen_t::draw(Room_t& arena, int start_x, int start_y)
 {
     coord_t size;
     arena.get_size(&size);
@@ -160,9 +160,9 @@ void Screen_t::draw(Arena_t& arena, int start_x, int start_y)
 
             switch(arena.Cells2[i][j])
             {
-                case Arena_t::NOTHING: ch = ' '; break;
-                case Arena_t::WALL: ch = '#'; break;
-                case Arena_t::FLOOR: ch = '.'; break;
+                case Room_t::NOTHING: ch = ' '; break;
+                case Room_t::WALL: ch = '#'; break;
+                case Room_t::FLOOR: ch = '.'; break;
             }
             
             Screen[j + start_y][i + start_x].Char.AsciiChar = ch;

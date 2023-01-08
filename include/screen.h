@@ -88,8 +88,8 @@ class Screen_t
         void draw_vertical_line(int x, int y, size_t size, char ch);
         void draw_horizontal_line(int x, int y, size_t size, char ch);
 
-        void draw(Arena_t& arena, int start_x = 0, int start_y = 0);
-        void draw(int x, int y, Arena_t * arena);
+        void draw(Room_t& arena, int start_x = 0, int start_y = 0);
+        void draw(int x, int y, Room_t * arena);
         void draw(Menu_t &menu, int x, int y, int color_fore = WHITE, int color_back = BLACK);
 
         void show(); //Print Screen_mem to console

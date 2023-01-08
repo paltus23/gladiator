@@ -43,7 +43,7 @@ void test_print_colour_screen()
 
     Screen_t screen(settings.console_screen_size_x, settings.console_screen_size_y);
 
-    Arena_t arena(50,20);
+    Room_t arena(50,20);
 
 //    Gladiator hummy("Hummy");
 

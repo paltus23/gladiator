@@ -26,7 +26,7 @@ int Game_t::Do()
             {
                 State = STATE_BATTLE;
                 Gladiator = new Gladiator_t("Player");
-                Arena = new Arena_t(10, 10);
+                Arena = new Room_t(10, 10);
                 Arena->simple_construct();
                 Arena->place_unit(Gladiator, 2,2);
                 Screen.clear();

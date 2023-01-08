@@ -1,4 +1,4 @@
-Terms 
+Terms
 Unit - someone who can move and hit
 Player - unit which controled by human
 Animal - unit which cannot use any weapon and attacks with paws and jaw.
@@ -12,9 +12,11 @@ Skills have different price.
 Points increase after wins.
 
 ======Units=======
-Units have health, stamina and action points.
+Units have health, stamina and action points (AP).
 
 Action points regard to time and stamina regards to get tired after simple or comlicated hit. Maybe you can run very long without rest, but get tired quickly when fighting and vise verca.
+
+
 
 ======Hits=======
 every hit have hit map, where described order of hit cells and relative direction.
@@ -25,14 +27,32 @@ before first battle, player choose first skills and one weapon.
 Maybe in future units can pick up weapon within battle.
 
 ======Battle=======
-the battle takes place in a closed 2d space with walls. 
+the battle takes place in a closed 2d space with walls.
 Before battle started, every units have picked maximum two weapons, if they can.
 
-Every step units draw track of run and hits. 
-At now, I dont know about hit. 
+
+Every step units draw track of run and hits.
+At now, I dont know about hit.
 There might be two ways.
 1. When calculate hit, other units considered as fixed
 2. When calculate hit, units move with every cell in hit simultaneously.
+
+@ - player
+% - enemy
+
+1. Every step divided by available APs, so every AP spent some time. Step finish according to spent time, whoever comes first gets in the cell
+Когда юниты двигаются и последние ячейки движения совпадают
+########
+#......#
+#......#
+#..@%..#
+#......#
+#......#
+#......#
+########
+
+
+
 
 ---Case: from start prog to play first battle---
 
@@ -42,5 +62,5 @@ Menu
 	exit
 
 
-	
+
 
