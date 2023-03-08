@@ -1,5 +1,5 @@
-#ifndef ARENA_H
-#define ARENA_H
+#ifndef ROOM_H
+#define ROOM_H
 
 #include "unit.h"
 #include "types.h"
@@ -9,7 +9,18 @@
 
 class Unit_t;
 
-class Arena_t
+class RandomSpace2d
+{
+    public:
+    enum type_t
+    {
+        DEFAULT_RANDOM
+    };
+
+};
+
+
+class Room_t
 {
     public:
 
@@ -22,11 +33,11 @@ class Arena_t
 
         cell_t **Cells;
         cell_t *Cells_cols;
-        std::vector< std::vector<Arena_t::cell_t> > Cells2;
+        std::vector< std::vector<Room_t::cell_t> > Cells2;
         std::list<Unit_t*> Unit_list;
 
-        Arena_t(int x, int y);
-        virtual ~Arena_t();
+        Room_t(int x, int y);
+        virtual ~Room_t();
 
 
         result_t place_unit(Unit_t* , int, int);
@@ -35,10 +46,14 @@ class Arena_t
         void get_size(coord_t * s){memcpy(s, &Size, sizeof(coord_t)); }
         void get_coord(coord_t * s){memcpy(s, &Coord, sizeof(coord_t)); }
         void simple_construct();
+        void create_random(RandomSpace2d::type_t type = RandomSpace2d::DEFAULT_RANDOM);
 
+        void create_random_default();
     private:
         coord_t Coord; // coordinate of left top cell
         const coord_t Size;
+
+        void decimate_field(bool *field, int x, int y);
 };
 
-#endif // ARENA_H
+#endif // ROOM_H

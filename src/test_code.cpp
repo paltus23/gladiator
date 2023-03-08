@@ -1,6 +1,6 @@
 #include "test_code.h"
 
-#include "arena.h"
+#include "room.h"
 #include "gladiator.h"
 #include "settings.h"
 #include "screen.h"
@@ -43,13 +43,13 @@ void test_print_colour_screen()
 
     Screen_t screen(settings.console_screen_size_x, settings.console_screen_size_y);
 
-    Room_t arena(50,20);
+    Room_t room(50,20);
 
 //    Gladiator hummy("Hummy");
 
-//    arena.place_unit((Unit*)&hummy, 10, 10);
+//    room.place_unit((Unit*)&hummy, 10, 10);
 
-//    arena.print_units();
+//    room.print_units();
 
 
     system("cls");

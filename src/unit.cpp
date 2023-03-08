@@ -3,7 +3,7 @@
 
 Unit_t::Unit_t(std::string name):
     Name(name),
-    Arena(nullptr),
+    Room(nullptr),
     X(-1),
     Y(-1)
 {
@@ -15,14 +15,14 @@ Unit_t::~Unit_t()
     //dtor
 }
 /**
- * @brief place unit in arena
- * @param in arena - 
+ * @brief place unit in room
+ * @param in room - 
  * @param in x - coordinate x of unit
  * @param in y - coordinate y of unit
 */
-void Unit_t::set_place(Room_t* arena, int x, int y)
+void Unit_t::set_place(Room_t* room, int x, int y)
 {
-    Arena = arena;
+    Room = room;
     X = x;
     Y = y;
 
@@ -35,15 +35,15 @@ void Unit_t::set_place(Room_t* arena, int x, int y)
 */
 bool Unit_t::move(coord_t *coord)
 {
-    coord_t arena_size;
-    Arena->get_size(&arena_size);
+    coord_t room_size;
+    Room->get_size(&room_size);
 
     if(coord->x >= 0 &&
     coord->y >= 0 &&
-    coord->x < arena_size.x &&
-    coord->y < arena_size.y )
+    coord->x < room_size.x &&
+    coord->y < room_size.y )
     {
-        auto cell = Arena->Cells2[coord->x][coord->y];
+        auto cell = Room->Cells2[coord->x][coord->y];
         if(cell != Room_t::NOTHING && cell != Room_t::WALL)
         {
             X = coord->x; 

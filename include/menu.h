@@ -13,6 +13,7 @@ class Menu_t
         enum START_MENU
         {
             START_GAME,
+            CREATE_RANDOM_ROOM,
             OPTIONS,
             EXIT
         };

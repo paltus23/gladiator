@@ -5,6 +5,7 @@
 const char* Start_menu_str[] = 
 {
     "Start game",
+    "Create random room",
     "Options",
     "Exit"
 };

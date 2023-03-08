@@ -137,15 +137,15 @@ void Screen_t::print(int x, int y, char* chars)
 }
 
 /**
- * @brief draw arena
- * @param in arena - 
+ * @brief draw room
+ * @param in room - 
  * @param in x - start x coord
  * @param in y - start y coord
  */
-void Screen_t::draw(Room_t& arena, int start_x, int start_y)
+void Screen_t::draw(Room_t& room, int start_x, int start_y)
 {
     coord_t size;
-    arena.get_size(&size);
+    room.get_size(&size);
 
     for (int i = 0; i < size.x; i++)
     {
@@ -158,7 +158,7 @@ void Screen_t::draw(Room_t& arena, int start_x, int start_y)
             
             char ch = '?';
 
-            switch(arena.Cells2[i][j])
+            switch(room.Cells2[i][j])
             {
                 case Room_t::NOTHING: ch = ' '; break;
                 case Room_t::WALL: ch = '#'; break;

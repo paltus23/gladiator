@@ -1,6 +1,6 @@
 #include "unit_tests.h"
 
-#include "arena.h"
+#include "room.h"
 #include "gladiator.h"
 #include "settings.h"
 #include "screen.h"

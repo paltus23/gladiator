@@ -1,7 +1,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
-#include "arena.h"
+#include "room.h"
 #include "types.h"
 #include "windows.h"
 #include "menu.h"

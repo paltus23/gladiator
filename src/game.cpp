@@ -34,6 +34,19 @@ int Game_t::Do()
                 Screen.draw_char(Gladiator->X,Gladiator->Y, '@', Screen_t::RED, Screen_t::BLACK);
                 Screen.show();
             }
+            if(Menu.Get_cursor() == Menu_t::CREATE_RANDOM_ROOM)
+            {
+                State = STATE_BATTLE;
+                Gladiator = new Gladiator_t("Player");
+                Arena = new Room_t(20, 20);
+                Arena->create_random();
+                //Arena->place_unit(Gladiator, 2,2);
+                Screen.clear();
+                Screen.draw(*Arena);
+                //Screen.draw_char(Gladiator->X,Gladiator->Y, '@', Screen_t::RED, Screen_t::BLACK);
+                Screen.show();
+            }
+
             if(Menu.Get_cursor() == Menu_t::EXIT)
             {
                 State = STATE_FINISH_GAME;
@@ -48,8 +61,15 @@ int Game_t::Do()
         Screen.show();
         break;
     case STATE_BATTLE:
+    {
         Do_battle();
+        if (State == STATE_START_MENU)
+        {
+            delete Gladiator;
+            delete Arena;
+        }
         break;
+    }
     case STATE_FINISH_BATTLE:
         break;
     case STATE_FINISH_GAME:
@@ -91,7 +111,7 @@ void Game_t::Do_battle()
         Gladiator->move(&coord);
 
 
-        Enemy->move(&coord);
+        //Enemy->move(&coord);
 
 
 

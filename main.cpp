@@ -1,6 +1,6 @@
 #include "user_control.h"
 #include "game.h"
-#include "arena.h"
+#include "room.h"
 #include "gladiator.h"
 #include "settings.h"
 #include "screen.h"
