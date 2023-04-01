@@ -22,6 +22,8 @@ SRC_FILES	+= $(wildcard $/*.cpp)
 CFLAGS		= -fdiagnostics-color=always -g -std=c++14 -Iinclude 
 CFLAGS		+= -MMD -MF $@.d
 TEST		=$(wildcard src/*.cpp)
+SEP := $(strip \)
+
 
 vpath %.cpp src:include
 vpath :$(BUILD_DIR)
@@ -35,7 +37,9 @@ VPATH +=$(BUILD_DIR)
 # OBJS := $(SRC_FILES:$(SRC_DIR)\\%=$(BUILD_DIR)\\%.o)
 
 OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o, $(notdir $(SRC_FILES)) )
-
+WIN_OBJ_DIR := $(subst /,$(SEP), $(OBJ_DIR))
+WIN_OBJS := $(subst /,$(SEP), $(OBJS) )
+WIN_OBJS_D := $(subst .o,.o.d, $(WIN_OBJS) )
 # String substitution (suffix version without %).
 # As an example, ./build/hello.cpp.o turns into ./build/hello.cpp.d
 # DEPS := $(OBJS:.o=.d)
@@ -58,4 +62,10 @@ $(PROGRAM_NAME) : $(OBJS)
 	
 	
 -include $(wildcard $(OBJ_DIR)/*.d)
+
+
+
+clean: 
+	del $(WIN_OBJS)
+	del $(WIN_OBJS_D)
 

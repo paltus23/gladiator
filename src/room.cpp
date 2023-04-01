@@ -106,7 +106,7 @@ void Room_t::create_random_default()
     std::rand();
 
     bool field[Size.x][Size.y];
-
+    /// fill with "false"
     for(auto i = 0; i < Size.x; i++)
     {
         memset(field[i], false, Size.y*sizeof(bool));
