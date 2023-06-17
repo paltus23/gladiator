@@ -90,7 +90,7 @@ class Screen_t
 
         void draw(Room_t& arena, int start_x = 0, int start_y = 0);
         void draw(int x, int y, Room_t * arena);
-        void draw(Menu_t &menu, int x, int y, int color_fore = WHITE, int color_back = BLACK);
+        void draw(Menu_t &menu, int x = 1, int y = 1, int color_fore = WHITE, int color_back = BLACK);
 
         void show(); //Print Screen_mem to console
         void clear(); //Fill Screen_mem with spaces

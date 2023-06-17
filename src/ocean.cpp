@@ -109,6 +109,7 @@ void Ocean_t::create_random_isle(int num, int cur_x, int cur_y, size_t area_size
 }
 
 /**
+ * DEPRECATED
 * @brief find empty cell of isle
 * @param in cur_x - start x cursor
 * @param in cur_y - start y cursor
