@@ -2,3 +2,4 @@
 /gladiator/gladiator.exe
 *.o.d
 *.o
+.vscode/
