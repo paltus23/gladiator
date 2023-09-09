@@ -1,6 +1,11 @@
 #include "room.h"
-#include <stdlib.h>
-#include "string.h"
+#include "game.h"
+#include "user_control.h"
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <cstdlib>
+
 /**
  * @brief constructor of Room_t
  * @param in x - size of x
@@ -30,6 +35,7 @@ Room_t::Room_t(int x, int y) : Size((coord_t){x,y})
 /// Destructor
 Room_t::~Room_t()
 {
+    free(Cells);
 }
 /**
  * @brief Place unit in room
@@ -44,7 +50,13 @@ result_t Room_t::place_unit(Unit_t* unit, int x, int y)
     if(y >= Size.y)
         return RESULT_ERROR;
 
+    if (Cells2[x][y] != FLOOR)
+    {
+        /* code */
+    }
+    
     unit->set_place(this,x,y);
+    
     return RESULT_OK;
 }
 
@@ -96,13 +108,11 @@ void Room_t::create_random(RandomSpace2d::type_t type)
     }
 }
 
-#include <ctime>
-#include <cstdlib>
+
 void Room_t::create_random_default()
 {
-    auto time = std::time(0);
-    printf("                           Time %d", time);
-    std::srand(time); //use current time as seed for random generator
+    auto seed = std::time(0) + Game.User_control.ActionsCount;
+    std::srand(seed); //use current time as seed for random generator
     std::rand();
 
     bool field[Size.x][Size.y];
@@ -122,21 +132,30 @@ void Room_t::create_random_default()
 
     decimate_field( (bool*)field, Size.x, Size.y);
 
+    construct_from_bool_field( (bool*)field, Size.x, Size.y);
+
+}
+
+void Room_t::construct_from_bool_field(bool * field, int x, int y)
+{
+        // replace with walls and floors
+    // the rule is 
     for(auto i = 0; i < Size.x; i++)
     {
         for(auto j = 0; j < Size.y; j++)
         {
 
-            if(field[i][j])
+            if(field[i*y + j])
             {
                 Cells2[i][j] = FLOOR;
             }
             else
             {
-                int val = field[i-1][j] + field[i+1][j] 
-                + field[i][j-1] + field[i][j+1]
-                + field[i-1][j-1] + field[i+1][j-1] 
-                + field[i+1][j+1] + field[i-1][j+1];
+                int val = field[(i-1)*y + j] + field[ (i+1)*y + j] 
+                + field[ (i)*y + j-1] + field[ (i)*y + j+1]
+                + field[ (i-1)*y + j-1] + field[ (i+1)*y + j-1] 
+                + field[ (i+1)*y + j+1] + field[ (i-1)*y + j+1];
+
                 if(val)
                     Cells2[i][j] = WALL;
                 else
@@ -145,12 +164,20 @@ void Room_t::create_random_default()
 
         }
     }
-
 }
 
-void Room_t::decimate_field(bool *field, int x, int y)
+void Room_t::decimate_field(bool* field, int x, int y)
 {
     bool new_field[x][y];
+
+    memset(new_field[0], false, y*sizeof(bool));
+    memset(new_field[x - 1], false, y*sizeof(bool));
+
+    for(int i = 1; i < x - 1; i++)
+    {
+        new_field[i][0] = new_field[i][y - 1] = false;
+    }    
+
 
     for(int i = 1; i < x - 1; i++)
     {
@@ -161,13 +188,13 @@ void Room_t::decimate_field(bool *field, int x, int y)
                     + field[ (i-1)*y + j-1] + field[ (i+1)*y + j-1] 
                     + field[ (i+1)*y + j+1] + field[ (i-1)*y + j+1];
             if( val > 2 && val < 6)
-                new_field[x][y] = true;
+                new_field[i][j] = true;
             else
-                new_field[x][y] = false;
+                new_field[i][j] = false;
         }
     }
 
-    memcpy(field, new_field, sizeof(bool)*x*y);
+    memcpy(field, &new_field[0][0], sizeof(bool)*x*y);
 
 
 }

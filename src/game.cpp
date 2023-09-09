@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include "utils.h"
+
 void Game_t::Init()
 {
     Menu.Set_state(Menu_t::STATE_START_MENU);
@@ -40,10 +42,22 @@ int Game_t::Do()
                 Gladiator = new Gladiator_t("Player");
                 Arena = new Room_t(20, 20);
                 Arena->create_random();
-                //Arena->place_unit(Gladiator, 2,2);
+                coord_t cursor_out;
+                bool (*get_cell)(int, int, void*) = [](int x, int y, void* obj) -> bool
+                {
+                    if(((Room_t*)obj)->Cells2[x][y] == Room_t::FLOOR)
+                        return false;
+                    else
+                        return true;
+                };
+                auto result = search_way_out(Arena, 2, 2, 20, 20, cursor_out, get_cell);
+                Arena->place_unit(Gladiator, cursor_out.x, cursor_out.y);
                 Screen.clear();
                 Screen.draw(*Arena);
-                //Screen.draw_char(Gladiator->X,Gladiator->Y, '@', Screen_t::RED, Screen_t::BLACK);
+                if(result)
+                {
+                    Screen.draw_char(Gladiator->X,Gladiator->Y, '@', Screen_t::RED, Screen_t::BLACK);
+                }
                 Screen.show();
             }
 

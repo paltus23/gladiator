@@ -13,7 +13,7 @@ const char* Start_menu_str[] =
 const char* Game_menu_str[] = 
 {
     "New battle",
-    "Contimue",
+    "Continue",
     "Back"
 };
 

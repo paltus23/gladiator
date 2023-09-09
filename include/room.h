@@ -54,6 +54,7 @@ class Room_t
         const coord_t Size;
 
         void decimate_field(bool *field, int x, int y);
+        void construct_from_bool_field(bool * field, int x, int y);
 };
 
 #endif // ROOM_H

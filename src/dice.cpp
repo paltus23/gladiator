@@ -9,8 +9,8 @@ void dice_init()
 }
 
 /** \brief  make a roll of a dice
-* \param [input] how many edges have dice
-* \return result of roll in range 1 - base
+* \param [in] how many edges have dice
+* \return result of roll in range from 1 to *base*
 */
 int dice(int base)
 {

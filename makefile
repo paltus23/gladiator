@@ -14,7 +14,7 @@
 PROGRAM_NAME = gladiator.exe
 BUILD_DIR	:=./build
 OBJ_DIR		:=$(BUILD_DIR)/obj
-CC 			= C:/msys64/mingw64/bin/g++.exe
+# CC 			= C:/msys64/mingw64/bin/g++.exe
 CC			=g++
 SRC_DIR		=./src
 SRC_FILES	:= $(wildcard $(SRC_DIR)/*.cpp)
