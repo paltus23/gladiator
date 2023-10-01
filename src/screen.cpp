@@ -12,10 +12,48 @@ void Screen_t::show()
     SetConsoleCursorPosition(handle, point);
     // std::cout << Screen_mem;
 
-    COORD dwBufferSize = {Size.x, Size.y};
-    COORD dwBufferCoord = {0,0};
-    SMALL_RECT writeRegion = {0,0,Size.x - 1, Size.y - 1};
+    // COORD consoleSize = GetLargestConsoleWindowSize(handle);
 
+
+    CONSOLE_SCREEN_BUFFER_INFO consoleScreenBufferInfo;
+
+    if(GetConsoleScreenBufferInfo(handle, &consoleScreenBufferInfo))
+    {
+        // typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
+        //     COORD dwSize;
+        //     COORD dwCursorPosition;
+        //     WORD wAttributes;
+        //     SMALL_RECT srWindow;
+        //     COORD dwMaximumWindowSize;
+        // } CONSOLE_SCREEN_BUFFER_INFO,*PCONSOLE_SCREEN_BUFFER_INFO;
+
+        char buff[100];
+        sprintf(buff, "dwSize x: %d, y: %d |" \
+        "srWindow bottom: %d, top: %d, left: %d, right: %d |" \
+        "dwMaximumWindowSize x: %d, y: %d",
+        consoleScreenBufferInfo.dwSize.X, 
+        consoleScreenBufferInfo.dwSize.Y, 
+        consoleScreenBufferInfo.srWindow.Bottom, 
+        consoleScreenBufferInfo.srWindow.Top, 
+        consoleScreenBufferInfo.srWindow.Left, 
+        consoleScreenBufferInfo.srWindow.Right, 
+        consoleScreenBufferInfo.dwMaximumWindowSize.X,
+        consoleScreenBufferInfo.dwMaximumWindowSize.Y
+        );
+        print(buff, 0, 22);
+    }
+
+// consoleScreenBufferInfo.srWindow.Bottom, consoleScreenBufferInfo.srWindow.Right, 
+    
+    // COORD dwBufferSize = {consoleScreenBufferInfo.srWindow.Right + 1, consoleScreenBufferInfo.srWindow.Bottom + 1};  //размер Screen_mem
+    COORD dwBufferSize = {Size.x, Size.y};  //размер Screen_mem
+    COORD dwBufferCoord = {0,0};            //координата откуда берём данные из Screen_mem
+    SMALL_RECT writeRegion = {  0,  // rectangle, where we write screen_mem in console
+                                0,
+                                consoleScreenBufferInfo.srWindow.Right,
+                                consoleScreenBufferInfo.srWindow.Bottom};
+    COORD actualWindowSize = {consoleScreenBufferInfo.srWindow.Right + 1, consoleScreenBufferInfo.srWindow.Bottom + 1};
+        
     auto res = WriteConsoleOutput(handle, Screen_mem, dwBufferSize, dwBufferCoord, &writeRegion);
 }
 
@@ -131,9 +169,14 @@ void Screen_t::get_console_size(coord_t *coord)
  * @brief print string from "chars" to Screen_mem
  * @param in chars - size of console window
  */
-void Screen_t::print(int x, int y, char* chars)
+void Screen_t::print(char* chars, int x, int y, int color_fore, int color_back)
 {
-    memcpy(&Screen[y][x], chars, strlen(chars));
+    WORD attr = (color_back << 4)| color_fore;
+    for(int cur = 0; cur < strlen(chars); cur++)
+    {
+        Screen[y][x + cur].Attributes = attr;
+        Screen[y][x + cur].Char.AsciiChar = chars[cur];
+    }
 }
 
 /**
@@ -182,9 +225,8 @@ void Screen_t::clear()
 // draw active menu on special coordinate, x and y is coordinate of left-up corner of menu 
 /// @brief 
 /// @param menu 
-/// @param x 
-/// @param y 
-/// @param color_fore 
+/// @param x, y - Start coordinate
+/// @param color_fore - 
 /// @param color_back
 void Screen_t::draw(Menu_t &menu, int x, int y, int color_fore, int color_back)
 {

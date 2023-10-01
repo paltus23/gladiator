@@ -30,7 +30,7 @@ class Game_t
         State_t State;
 
 
-        ///@todo remove create Screen and make auto-adjust for size of window
+        ///@todo postpone this. because, I don't know, what I should do with this at now. remove create Screen and make auto-adjust for size of window. 
         Game_t():Screen(120,30)
         {
             State = STATE_START_MENU;

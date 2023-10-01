@@ -44,12 +44,13 @@ WIN_OBJS_D := $(subst .o,.o.d, $(WIN_OBJS) )
 # As an example, ./build/hello.cpp.o turns into ./build/hello.cpp.d
 # DEPS := $(OBJS:.o=.d)
 
+# all: $(PROGRAM_NAME) 
 all: ./build/obj $(PROGRAM_NAME) 
 
 
 ./build/obj:
-	mkdir $(BUILD_DIR)
-	mkdir $(OBJ_DIR)
+	mkdir $(subst /,\,$(BUILD_DIR))
+	mkdir $(subst /,\,$(OBJ_DIR))
 
 $(OBJ_DIR)/%.o : %.cpp
 #	echo $@

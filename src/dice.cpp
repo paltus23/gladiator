@@ -30,3 +30,4 @@ int dice(int base)
 
     return random_variable;
 }
+

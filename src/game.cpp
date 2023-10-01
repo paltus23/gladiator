@@ -85,6 +85,7 @@ int Game_t::Do()
         break;
     }
     case STATE_FINISH_BATTLE:
+        State = STATE_FINISH_GAME;
         break;
     case STATE_FINISH_GAME:
         Screen.clear();
@@ -124,11 +125,7 @@ void Game_t::Do_battle()
         
         Gladiator->move(&coord);
 
-
         //Enemy->move(&coord);
-
-
-
 
         Screen.draw(*Arena);
         Screen.draw_char(coord.x, coord.y, '@', Screen_t::RED, Screen_t::BLACK);
